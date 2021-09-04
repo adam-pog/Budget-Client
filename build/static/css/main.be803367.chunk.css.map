@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css","App.css"],"names":[],"mappings":"AAAA,qBACE,WACF,CACA,KACE,QAAS,CACT,wBAAyB,CACzB,kBACF,CCPA,MACE,gBACF","file":"main.be803367.chunk.css","sourcesContent":["html, body, #root, #App{\n  height: 100%;\n}\nbody {\n  margin: 0;\n  background-color: #282c34;\n  font-family: \"Roboto\";\n}\n",".Main {\n  padding-top: 60px\n}\n"]}
