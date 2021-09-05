@@ -38,10 +38,10 @@ class App extends React.Component {
   }
 
   logout() {
-    Fetch('logout', 'post')
+    Fetch('shelf_auth/logout/', 'post')
     .then(([status, _response]) => {
       if(status === 200) {
-        this.props.setAuthenticated({authenticated: false, name: ''})
+        this.props.setAuthenticated({authenticated: false})
         this.setState({ menuState: 'hidden' })
       } else {
         console.log("Couldn't authenticate")

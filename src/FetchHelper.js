@@ -3,13 +3,13 @@ import { setAuthenticated } from './actions/index';
 import Store from './config/configureStore'
 
 export function Fetch(url, method, body = null) {
-  const csrf_token = Cookies.get('CSRF-Token');
+  const token = localStorage.getItem('token');
 
   return fetch(url, {
     method: method,
     headers: {
       'Content-Type':'application/json',
-      ...(csrf_token && {"X-CSRF-Token" : `${csrf_token}`})
+      ...(token && {"Authorization" : `Token ${token}`})
     },
     credentials: 'same-origin',
     ...(body && {body: body})
@@ -19,7 +19,7 @@ export function Fetch(url, method, body = null) {
   })
   .then(([status, response]) => {
     if(status === 401) {
-      Store.dispatch(setAuthenticated({authenticated: false, name: ''}))
+      Store.dispatch(setAuthenticated({authenticated: false}))
     }
 
     return Promise.all([status, response])

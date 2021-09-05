@@ -2,20 +2,25 @@ import {
   SET_AUTHENTICATED
 } from '../constants/action-types';
 
-const authenticated = window.sessionStorage.getItem("authenticated") === 'true'
+const authenticated = localStorage.getItem("authenticated") === 'true'
 
 const initialState = {
-  authenticated,
-  name: window.sessionStorage.getItem("name")
+  authenticated
 };
 
 function rootReducer(state = initialState, action) {
   if (action.type === SET_AUTHENTICATED) {
-    window.sessionStorage.setItem("authenticated", action.payload.authenticated);
-    window.sessionStorage.setItem("name", action.payload.name);
+    localStorage.setItem("authenticated", action.payload.authenticated);
+
+    if(action.payload.authenticated) {
+      localStorage.setItem('token', action.payload.token)
+    } else {
+      localStorage.removeItem('token')
+      localStorage.setItem('authenticated', false)
+    }
+
     return Object.assign({}, state, {
-      authenticated: action.payload.authenticated,
-      name: action.payload.name
+      authenticated: action.payload.authenticated
     });
   }
 

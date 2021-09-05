@@ -14,16 +14,16 @@ const mapDispatchToProps = dispatch => {
 }
 
 function Login({ setAuthenticated }) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const login = () => {
-    const body = { email: email, password: password }
+    const body = { username: username, password: password }
 
-    Fetch('login', 'post', JSON.stringify(body))
+    Fetch('shelf_auth/api-token-auth/', 'post', JSON.stringify(body))
     .then(([status, response]) => {
       if(status === 200) {
-        setAuthenticated({authenticated: true, name: response.name});
+        setAuthenticated({authenticated: true, token: response.token});
         history.push('/budget_categories')
       } else {
         console.log('Authentication Failed')
@@ -42,8 +42,8 @@ function Login({ setAuthenticated }) {
           type='text'
           className='input'
           autoFocus
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder='Email'
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder='Username'
           onKeyPress={(e) => onKeyDown(e.key)}
           >
         </input>
