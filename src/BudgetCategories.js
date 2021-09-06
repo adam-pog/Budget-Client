@@ -4,16 +4,13 @@ import { gql, useQuery, useMutation } from '@apollo/client';
 import history from './config/history';
 
 const getBudgetCategories = gql`
-  query budgetCategories {
-    currentUser {
-      income
-      budgetCategories {
-        id
-        label
-        monthlyAmount
-        spent
-        progress
-      }
+  query allCategories {
+    allCategories {
+      id
+      label
+      monthlyAmount
+      spent
+      progress
     }
   }
 `;
@@ -61,7 +58,7 @@ function BudgetCategories({menuState, hideMenu}) {
   }
 
   const budgetCategoriesPresent = () => (
-    data && data.currentUser.budgetCategories.length > 0
+    data && data.allCategories.length > 0
   )
 
   return (
@@ -70,7 +67,7 @@ function BudgetCategories({menuState, hideMenu}) {
       { budgetCategoriesPresent() &&
         <div className={'budgetCategories'} data-class='container'>
           {
-            data && data.currentUser.budgetCategories.map((category, i) => (
+            data && data.allCategories.map((category, i) => (
               <span key={i} className='budgetCategoryContainerWrap'>
                 <div className='budgetCategoryContainer'>
                   <p className='categoryLabel'>{category.label}</p>

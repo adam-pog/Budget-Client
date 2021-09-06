@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import './Login.scss';
 import history from './config/history'
-import { Fetch } from './FetchHelper.js'
+import { gql, useMutation } from '@apollo/client';
 import { setAuthenticated } from "./actions/index";
 import { connect } from "react-redux";
+
+const GET_TOKEN = gql`
+  mutation TokenAuth($username: String!, $password: String!) {
+    tokenAuth(username: $username, password: $password) {
+      token
+    }
+  }
+`;
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -16,17 +24,24 @@ const mapDispatchToProps = dispatch => {
 function Login({ setAuthenticated }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [getToken] = useMutation(
+    GET_TOKEN,
+    { errorPolicy: 'all' }
+  );
 
   const login = () => {
-    const body = { username: username, password: password }
-
-    Fetch('shelf_auth/api-token-auth/', 'post', JSON.stringify(body))
-    .then(([status, response]) => {
-      if(status === 200) {
-        setAuthenticated({authenticated: true, token: response.token});
-        history.push('/budget_categories')
-      } else {
+    getToken({
+      variables: { username: username, password: password }
+    }).then((response) => {
+      if(response.errors) {
         console.log('Authentication Failed')
+      } else {
+        setAuthenticated({
+          authenticated: true,
+          token: response.data.tokenAuth.token
+        });
+
+        history.push('/budget_categories')
       }
     })
   }

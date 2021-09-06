@@ -4,23 +4,23 @@ import Cookies from 'js-cookie';
 
 const client = new ApolloClient({
   uri: '/graphql',
-  headers: { 'X-CSRF-Token': Cookies.get('CSRF-Token') },
+  headers: {},
   cache: new InMemoryCache()
 });
 
 
-client
-  .query({
-    query: gql`
-      query GetCurrentUser {
-        currentUser {
-          id
-          budgetCategories {
-            id
-            label
-          }
-        }
-      }
-    `
-  })
-  .then(result => console.log(result));
+// client
+//   .query({
+//     query: gql`
+//       query GetCurrentUser {
+//         currentUser {
+//           id
+//           budgetCategories {
+//             id
+//             label
+//           }
+//         }
+//       }
+//     `
+//   })
+//   .then(result => console.log(result));

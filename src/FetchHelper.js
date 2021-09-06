@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { setAuthenticated } from './actions/index';
 import Store from './config/configureStore'
 

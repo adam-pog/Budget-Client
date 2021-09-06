@@ -15,6 +15,17 @@ const httpLink = createHttpLink({
   uri: '/graphql',
 });
 
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('token');
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `JWT ${token}` : "",
+    }
+  }
+});
+
 const errorLink = onError(({ networkError, graphQLErrors }) => {
   console.log(graphQLErrors)
   if (networkError && [401, 422].includes(networkError.statusCode)) {
@@ -23,7 +34,7 @@ const errorLink = onError(({ networkError, graphQLErrors }) => {
 });
 
 const client = new ApolloClient({
-  link: from([errorLink, httpLink]),
+  link: from([authLink, errorLink, httpLink]),
   cache: new InMemoryCache(),
   errorPolicy: 'all'
 });

@@ -82,11 +82,11 @@ class App extends React.Component {
             <ol className={'menu'} data-class='container' onDoubleClick={(e) => this.onDoubleClick(e.target)}>
               <li className={`listItem ${this.state.menuState}`}>
                 {
-                  (history.location.pathname == '/login') &&
+                  (history.location.pathname === '/login') &&
                   <Link className="menuLink" to="/signup" onClick={() => this.hideMenu()}> Signup </Link>
                 }
                 {
-                  (history.location.pathname == '/signup') &&
+                  (history.location.pathname === '/signup') &&
                   <Link className="menuLink" to="/login" onClick={() => this.hideMenu()}> Login </Link>
                 }
               </li>
