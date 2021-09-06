@@ -7,7 +7,6 @@ import AddBudgetCategory from './AddBudgetCategory.js'
 import history from './config/history';
 import { Route, Router, Switch, Redirect, Link } from 'react-router-dom'
 import { connect } from "react-redux";
-import { Fetch } from './FetchHelper.js'
 import { setAuthenticated } from "./actions/index";
 
 const mapStateToProps = state => {
@@ -38,15 +37,8 @@ class App extends React.Component {
   }
 
   logout() {
-    Fetch('shelf_auth/logout/', 'post')
-    .then(([status, _response]) => {
-      if(status === 200) {
-        this.props.setAuthenticated({authenticated: false})
-        this.setState({ menuState: 'hidden' })
-      } else {
-        console.log("Couldn't authenticate")
-      }
-    })
+    this.props.setAuthenticated({authenticated: false})
+    this.setState({ menuState: 'hidden' })
   }
 
   onDoubleClick(target) {

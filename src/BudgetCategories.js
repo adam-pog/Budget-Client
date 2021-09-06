@@ -10,7 +10,6 @@ const getBudgetCategories = gql`
       label
       monthlyAmount
       spent
-      progress
     }
   }
 `;
