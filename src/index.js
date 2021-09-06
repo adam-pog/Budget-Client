@@ -7,7 +7,6 @@ import { ApolloProvider } from '@apollo/client/react';
 import { ApolloClient, createHttpLink, InMemoryCache, from } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
 import { setContext } from '@apollo/client/link/context';
-import Cookies from 'js-cookie';
 import { setAuthenticated } from './actions/index';
 import store from "./config/configureStore";
 
@@ -27,8 +26,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const errorLink = onError(({ networkError, graphQLErrors }) => {
-  console.log(graphQLErrors)
-  if (networkError && [401, 422].includes(networkError.statusCode)) {
+  if (graphQLErrors.find((error) => error.message === 'Signature has expired')) {
     store.dispatch(setAuthenticated({authenticated: false}));
   }
 });

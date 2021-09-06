@@ -3,10 +3,10 @@ import './AddBudgetCategory.scss';
 import history from './config/history'
 import { gql, useMutation } from '@apollo/client';
 
-const ADD_BUDGET_CATEGORY = gql`
-  mutation createBudgetCategory($label: String!, $monthlyAmount: Int!) {
-    createBudgetCategory(input: { label: $label, monthlyAmount: $monthlyAmount }) {
-      budgetCategory {
+const ADD_CATEGORY = gql`
+  mutation createCategory($label: String!, $monthlyAmount: Int!) {
+    createCategory(label: $label, monthlyAmount: $monthlyAmount) {
+      category {
         id
       }
     }
@@ -16,8 +16,8 @@ const ADD_BUDGET_CATEGORY = gql`
 function AddBudgetCategory() {
   const [label, setLabel] = useState('');
   const [monthlyAmount, setMonthlyAmount] = useState(0);
-  const [addBudgetCategory] = useMutation(
-    ADD_BUDGET_CATEGORY,
+  const [addCategory] = useMutation(
+    ADD_CATEGORY,
     { errorPolicy: 'all' }
   );
 
@@ -26,7 +26,7 @@ function AddBudgetCategory() {
   }
 
   const onSubmit = () => {
-    addBudgetCategory({
+    addCategory({
       variables: { label: label, monthlyAmount: monthlyAmount }
     }).then(() => {
       history.push('/budget_categories')
