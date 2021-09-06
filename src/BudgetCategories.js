@@ -15,9 +15,9 @@ const getBudgetCategories = gql`
 `;
 
 const DELETE_BUDGET_CATEGORY = gql`
-  mutation deleteBudgetCategory($id: ID!) {
-    deleteBudgetCategory(input: { id: $id }) {
-      budgetCategory {
+  mutation deleteCategory($id: ID!) {
+    deleteCategory(id: $id) {
+      category {
         id
       }
     }
@@ -50,7 +50,7 @@ function BudgetCategories({menuState, hideMenu}) {
     deleteBudgetCategory({
       variables: { id: id },
       update(cache) {
-        cache.evict({ id: `BudgetCategory:${id}` });
+        cache.evict({ id: `CategoryType:${id}` });
         cache.gc();
       }
     })
