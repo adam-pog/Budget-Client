@@ -3,6 +3,7 @@ import './App.scss';
 import Login from './Login.js'
 import Signup from './Signup.js'
 import BudgetCategories from './BudgetCategories.js'
+import BudgetCategory from './BudgetCategory.js'
 import AddBudgetCategory from './AddBudgetCategory.js'
 import history from './config/history';
 import { Route, Router, Switch, Redirect, Link } from 'react-router-dom'
@@ -62,7 +63,7 @@ class App extends React.Component {
             this.props.authenticated &&
             <ol className={'menu'} data-class='container' onDoubleClick={(e) => this.onDoubleClick(e.target)}>
               <li className={`listItem ${this.state.menuState}`}>
-                <Link className="menuLink" to="/budget_categories" > Home </Link>
+                <Link className="menuLink" to="/budget_categories" onClick={() => this.hideMenu()}> Home </Link>
               </li>
               <li className={`listItem ${this.state.menuState}`}>
                 <button className="menuLink" onClick={() => this.logout()}> Logout </button>
@@ -105,6 +106,14 @@ class App extends React.Component {
               <PrivateRoute
                 path='/budget_categories'
                 component={BudgetCategories}
+                menuState={this.state.menuState}
+                hideMenu={() => this.hideMenu()}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
+                path='/budget_category/:id'
+                component={BudgetCategory}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
                 authenticated={this.props.authenticated}>

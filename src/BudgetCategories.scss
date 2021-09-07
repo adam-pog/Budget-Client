@@ -31,7 +31,7 @@
 }
 
 .budgetCategoryContainerWrap {
-  margin-top: 1%;
+  margin-top: 2%;
   width: 50%;
   filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.5));
 }
@@ -125,7 +125,8 @@
   }
 
   .budgetCategoryContainerWrap {
-    width: 90%
+    margin-top: 5%;
+    width: 100%;
   }
 
   .addBudgetCategory {
