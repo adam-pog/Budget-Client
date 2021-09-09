@@ -34,7 +34,7 @@ function AddBudgetCategory() {
   }
 
   return (
-    <div className={'inputContainer'}>
+    <div className={'inputContainer'} data-class='container'>
       <span className='inputWrap'>
         <input
           type='text'

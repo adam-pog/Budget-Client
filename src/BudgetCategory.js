@@ -28,8 +28,6 @@ function BudgetCategory({menuState, hideMenu, match}) {
     fetchPolicy: 'network-only'
   });
 
-  console.log('data: ', data)
-
   const amountClass = (budgetCategory) => (
     budgetCategory.spent < budgetCategory.monthlyAmount ?
     'budgetColor' : 'overBudgetColor'
@@ -37,7 +35,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
 
   const onClickAdd = () => {
     hideMenu()
-    history.push('/add_budget_category')
+    history.push(`/budget_category/${match.params.id}/add_transaction`)
   }
 
   return (

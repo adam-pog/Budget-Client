@@ -5,6 +5,7 @@ import Signup from './Signup.js'
 import BudgetCategories from './BudgetCategories.js'
 import BudgetCategory from './BudgetCategory.js'
 import AddBudgetCategory from './AddBudgetCategory.js'
+import AddTransaction from './AddTransaction.js'
 import history from './config/history';
 import { Route, Router, Switch, Redirect, Link } from 'react-router-dom'
 import { connect } from "react-redux";
@@ -108,6 +109,13 @@ class App extends React.Component {
                 component={BudgetCategories}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
+                path='/budget_category/:id/add_transaction'
+                component={AddTransaction}
+                menuState={this.state.menuState}
                 authenticated={this.props.authenticated}>
               </PrivateRoute>
 
