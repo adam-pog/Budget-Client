@@ -5,7 +5,7 @@ import history from './config/history';
 import Header from './Header';
 
 const getBudgetCategory = gql`
-  query budgetCategories($id: ID!) {
+  query budgetCategory($id: ID!) {
     category(id: $id) {
       id
       label
