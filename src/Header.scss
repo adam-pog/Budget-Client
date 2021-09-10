@@ -37,3 +37,17 @@
 .backHeader {
   justify-content: center;
 }
+
+.headerLabel {
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .backHeader {
+    display: none;
+  }
+
+  .padding {
+    display: none;
+  }
+}

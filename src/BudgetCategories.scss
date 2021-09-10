@@ -133,6 +133,10 @@
     height: 6%;
     width: 45%;
   }
+
+  .categoryLabel {
+    flex: 4;
+  }
 }
 
 @media only screen and (max-height: 400px) {

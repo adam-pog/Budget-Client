@@ -3,10 +3,11 @@ import './AddTransaction.scss';
 import history from './config/history'
 import { gql, useMutation } from '@apollo/client';
 import Header from './Header'
+import ToggleButton from 'react-toggle-button'
 
 const ADD_TRANSACTION = gql`
-  mutation createTransaction($amount: Float!, $source: String!, $date: String!, $description: String!, $categoryId: ID!) {
-    createTransaction(amount: $amount, source: $source, date: $date, description: $description, categoryId: $categoryId) {
+  mutation createTransaction($amount: Float!, $source: String!, $date: String!, $description: String!, $categoryId: ID!, $recurring: Boolean!) {
+    createTransaction(amount: $amount, source: $source, date: $date, description: $description, categoryId: $categoryId, recurring: $recurring) {
       transaction {
         id
       }
@@ -19,6 +20,7 @@ function AddTransaction({ match }) {
   const [source, setSource] = useState('');
   const [date, setDate] = useState(0);
   const [description, setDescription] = useState(0);
+  const [recurring, setRecurring] = useState(false);
   const [addTransaction] = useMutation(
     ADD_TRANSACTION,
     { errorPolicy: 'all' }
@@ -35,7 +37,8 @@ function AddTransaction({ match }) {
         source: source,
         date: date,
         description: description,
-        categoryId: match.params.id
+        categoryId: match.params.id,
+        recurring: recurring
       }
     }).then(() => {
       history.push(`/budget_category/${match.params.id}`)
@@ -88,6 +91,28 @@ function AddTransaction({ match }) {
           onKeyPress={(e) => onKeyDown(e.key)}
           >
         </input>
+      </span>
+
+      <span className='inputWrap recurringToggle'>
+        <p className={'recurringToggleLabel'}>Recurring: </p>
+        <ToggleButton
+          value={ recurring }
+          onToggle={(value) => setRecurring(!value)}
+          trackStyle={{opacity: '70%'}}
+          colors={{
+            activeThumb: {
+              base: '#bec8cc',
+            },
+            inactiveThumb: {
+              base: '#666f80',
+            },
+            active: {
+              base: '#2a614d99',
+              hover: '#2a614d99',
+            }
+          }}
+          active
+          />
       </span>
 
       <input

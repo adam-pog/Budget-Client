@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   height: 50%;
-  width: 60%;
+  width: 80%;
 }
 
 .input {
@@ -57,9 +57,21 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #21ab79;
 }
 
+.recurringToggle {
+  display: flex;
+  flex-direction: row;
+  // width: 50%;
+  justify-content: center;
+  align-items: center;
+}
+
+.recurringToggleLabel {
+  margin-right: 10%;
+}
+
 @media only screen and (max-width: 600px) {
   .inputWrap {
-    margin: 5%;
+    margin: 3%;
     height: 10%;
     width: 100%;
   }
@@ -71,7 +83,8 @@ input[type=number]::-webkit-outer-spin-button {
   }
 
   .inputContainer {
-    width: 60%;
+    width: 80%;
+    height: 70%;
   }
 }
 
@@ -83,6 +96,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 @media only screen and (max-height: 400px) {
   .inputWrap {
-    height: 15%;
+    margin: 1%;
+    height: 10%;
+  }
+
+  .addTransactionSubmit {
+    margin-top: 0%;
+  }
+
+  .inputContainer {
+    height: 100%;
   }
 }

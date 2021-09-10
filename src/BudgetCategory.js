@@ -47,7 +47,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
           {
             <div className='categoryTitleContainer' data-class='container'>
               <Header prevRoute={'/budget_catgories'} title={data.category.label}/>
-              <h3 className={`categoryAmount ${amountClass(data.category)}`}>{data.category.spent} / {data.category.monthlyAmount}</h3>
+              <h3 className={`categoryAmount ${amountClass(data.category)}`}>{data.category.spent.toFixed(2)} / {data.category.monthlyAmount}</h3>
             </div>
           }
           {

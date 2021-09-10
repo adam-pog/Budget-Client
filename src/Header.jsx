@@ -15,7 +15,7 @@ function Header({ prevRoute, title }) {
       <div className='header'>
         <h1 className='headerLabel'>{title}</h1>
       </div>
-      <div className='header'>
+      <div className='header padding'>
       </div>
     </div>
   )

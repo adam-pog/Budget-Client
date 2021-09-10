@@ -90,10 +90,6 @@
 	background-color: #555;
 }
 
-.categoryLabel {
-  flex: 6;
-}
-
 .categoryAmount {
   flex: 4;
 }
@@ -106,13 +102,6 @@
 .trash {
   height: 24px;
   width: 24px;
-}
-
-.trashContainer {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  color: #ff3333;
 }
 
 .budgetColor {
