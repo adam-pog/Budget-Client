@@ -119,6 +119,20 @@
   }
 }
 
+@media only screen and (max-width: 3400px) {
+  .budgetCategories {
+    width: 80%;
+  }
+
+  .budgetCategoryContainerWrap {
+    width: 70%;
+  }
+
+  .addBudgetCategory {
+    width: 20%;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .budgetCategories {
     height: 70%;
