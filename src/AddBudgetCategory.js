@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './AddBudgetCategory.scss';
 import history from './config/history'
 import { gql, useMutation } from '@apollo/client';
+import Header from './Header'
 
 const ADD_CATEGORY = gql`
   mutation createCategory($label: String!, $monthlyAmount: Int!) {
@@ -35,6 +36,7 @@ function AddBudgetCategory() {
 
   return (
     <div className={'inputContainer'} data-class='container'>
+      <Header prevRoute={'/budget_categories'} title={'Create Category'}/>
       <span className='inputWrap'>
         <input
           type='text'

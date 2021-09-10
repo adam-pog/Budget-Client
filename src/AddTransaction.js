@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './AddTransaction.scss';
 import history from './config/history'
 import { gql, useMutation } from '@apollo/client';
+import Header from './Header'
 
 const ADD_TRANSACTION = gql`
   mutation createTransaction($amount: Float!, $source: String!, $date: String!, $description: String!, $categoryId: ID!) {
@@ -43,6 +44,7 @@ function AddTransaction({ match }) {
 
   return (
     <div className={'inputContainer'} data-class='container'>
+      <Header prevRoute={`/budget_category/${match.params.id}`} title={'Create Transaction'} />
       <span className='inputWrap'>
         <input
           type='text'

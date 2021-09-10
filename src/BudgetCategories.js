@@ -70,6 +70,7 @@ function BudgetCategories({menuState, hideMenu}) {
       { error && <p>Error fetching data</p> }
       { budgetCategoriesPresent() &&
         <div className={'budgetCategories'} data-class='container'>
+          <h1>Categories</h1>
           {
             data && data.allCategories.map((category, i) => (
               <span key={i} className='budgetCategoryContainerWrap'>
