@@ -108,8 +108,7 @@ function MonthlyBudgets({menuState, hideMenu}) {
   )
 
   const onClickCategory = (id) => {
-    // history.push(`/budget_category/${id}`);
-    console.log('monthly budget id: ', id)
+    history.push(`/budgets/${id}/budget_categories/`);
   }
 
   const amountClass = (net) => (

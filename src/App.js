@@ -66,7 +66,7 @@ class App extends React.Component {
             this.props.authenticated &&
             <ol className={'menu'} data-class='container' onDoubleClick={(e) => this.onDoubleClick(e.target)}>
               <li className={`listItem ${this.state.menuState}`}>
-                <Link className="menuLink" to="/budget_categories" onClick={() => this.hideMenu()}> Home </Link>
+                <Link className="menuLink" to="/budgets" onClick={() => this.hideMenu()}> Home </Link>
               </li>
               <li className={`listItem ${this.state.menuState}`}>
                 <button className="menuLink" onClick={() => this.logout()}> Logout </button>
@@ -107,7 +107,14 @@ class App extends React.Component {
               }
 
               <PrivateRoute
-                path='/budget_categories'
+                path='/budgets/:budget_id/add_budget_category'
+                component={AddBudgetCategory}
+                menuState={this.state.menuState}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
+                path='/budgets/:budget_id/budget_categories'
                 component={BudgetCategories}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
@@ -115,7 +122,7 @@ class App extends React.Component {
               </PrivateRoute>
 
               <PrivateRoute
-                path='/monthly_budgets'
+                path='/budgets'
                 component={MonthlyBudgets}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
@@ -123,24 +130,17 @@ class App extends React.Component {
               </PrivateRoute>
 
               <PrivateRoute
-                path='/budget_category/:id/add_transaction'
+                path='/budgets/:budget_id/budget_categories/:category_id/add_transaction'
                 component={AddTransaction}
                 menuState={this.state.menuState}
                 authenticated={this.props.authenticated}>
               </PrivateRoute>
 
               <PrivateRoute
-                path='/budget_category/:id'
+                path='/budgets/:budget_id/budget_categories/:category_id'
                 component={BudgetCategory}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
-                authenticated={this.props.authenticated}>
-              </PrivateRoute>
-
-              <PrivateRoute
-                path='/add_budget_category'
-                component={AddBudgetCategory}
-                menuState={this.state.menuState}
                 authenticated={this.props.authenticated}>
               </PrivateRoute>
 
@@ -156,7 +156,7 @@ class App extends React.Component {
                   <Redirect to='/login' />
                 }
                 { this.props.authenticated &&
-                  <Redirect to='/monthly_budgets' />
+                  <Redirect to='/budgets' />
                 }
 
               </Route>

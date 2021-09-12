@@ -2,10 +2,11 @@ import React from 'react';
 import './BudgetCategories.scss';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import history from './config/history';
+import Header from './Header'
 
 const getBudgetCategories = gql`
-  query allCategories {
-    allCategories {
+  query allCategories($budgetId: ID!) {
+    allCategories(budgetId: $budgetId) {
       id
       label
       monthlyAmount
@@ -25,8 +26,9 @@ const DELETE_BUDGET_CATEGORY = gql`
 `;
 
 
-function BudgetCategories({menuState, hideMenu}) {
+function BudgetCategories({menuState, hideMenu, match}) {
   const { error, data } = useQuery(getBudgetCategories, {
+    variables: { budgetId:  match.params.budget_id},
     fetchPolicy: 'network-only'
   });
 
@@ -42,7 +44,7 @@ function BudgetCategories({menuState, hideMenu}) {
 
   const onClick = () => {
     hideMenu();
-    history.push('/add_budget_category');
+    history.push(`/budgets/${match.params.budget_id}/add_budget_category`);
   }
 
   const onClickDelete = (e, id) => {
@@ -70,7 +72,7 @@ function BudgetCategories({menuState, hideMenu}) {
       { error && <p>Error fetching data</p> }
       { budgetCategoriesPresent() &&
         <div className={'budgetCategories'} data-class='container'>
-          <h1>Categories</h1>
+          <Header prevRoute={`/budgets`} title={'Categories'}/>
           {
             data && data.allCategories.map((category, i) => (
               <span key={i} className='budgetCategoryContainerWrap'>

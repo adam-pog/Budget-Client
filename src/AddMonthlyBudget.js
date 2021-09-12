@@ -60,7 +60,7 @@ function AddMonthlyBudget() {
     addMonthlyBudget({
       variables: { year: year, month: month, income: income }
     }).then(() => {
-      history.push('/monthly_budgets')
+      history.push('/budgets')
     })
   }
 

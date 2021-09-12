@@ -5,8 +5,8 @@ import { gql, useMutation } from '@apollo/client';
 import Header from './Header'
 
 const ADD_CATEGORY = gql`
-  mutation createCategory($label: String!, $monthlyAmount: Int!) {
-    createCategory(label: $label, monthlyAmount: $monthlyAmount) {
+  mutation createCategory($label: String!, $monthlyAmount: Int!, $budgetId: ID!) {
+    createCategory(label: $label, monthlyAmount: $monthlyAmount, budgetId: $budgetId) {
       category {
         id
       }
@@ -14,7 +14,7 @@ const ADD_CATEGORY = gql`
   }
 `;
 
-function AddBudgetCategory() {
+function AddBudgetCategory({ match }) {
   const [label, setLabel] = useState('');
   const [monthlyAmount, setMonthlyAmount] = useState(0);
   const [addCategory] = useMutation(
@@ -28,15 +28,15 @@ function AddBudgetCategory() {
 
   const onSubmit = () => {
     addCategory({
-      variables: { label: label, monthlyAmount: monthlyAmount }
+      variables: { label: label, monthlyAmount: monthlyAmount, budgetId: match.params.budget_id }
     }).then(() => {
-      history.push('/budget_categories')
+      history.push(`/budgets/${match.params.budget_id}/budget_categories`)
     })
   }
 
   return (
     <div className={'inputContainer'} data-class='container'>
-      <Header prevRoute={'/budget_categories'} title={'Create Category'}/>
+      <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={'Create Category'}/>
       <span className='inputWrap'>
         <input
           type='text'
