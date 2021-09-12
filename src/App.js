@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import Login from './Login.js'
 import Signup from './Signup.js'
+import MonthlyBudgets from './MonthlyBudgets.js'
 import BudgetCategories from './BudgetCategories.js'
 import BudgetCategory from './BudgetCategory.js'
 import AddBudgetCategory from './AddBudgetCategory.js'
@@ -113,6 +114,14 @@ class App extends React.Component {
               </PrivateRoute>
 
               <PrivateRoute
+                path='/monthly_budgets'
+                component={MonthlyBudgets}
+                menuState={this.state.menuState}
+                hideMenu={() => this.hideMenu()}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
                 path='/budget_category/:id/add_transaction'
                 component={AddTransaction}
                 menuState={this.state.menuState}
@@ -139,7 +148,7 @@ class App extends React.Component {
                   <Redirect to='/login' />
                 }
                 { this.props.authenticated &&
-                  <Redirect to='/budget_categories' />
+                  <Redirect to='/monthly_budgets' />
                 }
 
               </Route>

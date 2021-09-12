@@ -41,7 +41,7 @@ function Login({ setAuthenticated }) {
           token: response.data.tokenAuth.token
         });
 
-        history.push('/budget_categories')
+        history.push('/monthly_budgets')
       }
     })
   }
