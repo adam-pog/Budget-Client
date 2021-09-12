@@ -33,8 +33,10 @@ const selectStyles = {
   })
 }
 
+const currentYear = new Date().getFullYear();
+
 function MonthlyBudgets({menuState, hideMenu}) {
-  const [budgetYear, setBudgetYear] = useState(new Date().getFullYear());
+  const [budgetYear, setBudgetYear] = useState(currentYear);
 
   const [getBudgets, getMonthlyBudgetsResponse] = useLazyQuery(getMonthlyBudgets)
 
@@ -47,8 +49,7 @@ function MonthlyBudgets({menuState, hideMenu}) {
       variables: { year: budgetYear },
       fetchPolicy: 'network-only'
     });
-  }, [budgetYear, getBudgets]);
-
+  }, [budgetYear]);
 
   const monthlyBudgetsData = () => {
     return getMonthlyBudgetsResponse.data
@@ -62,6 +63,9 @@ function MonthlyBudgets({menuState, hideMenu}) {
     const years = getAvailableYearsResponse.data && getAvailableYearsResponse.data.allBudgetYears;
 
     if(years) {
+      if ((budgetYear === currentYear) && budgetYear !== years[0]) {
+        setBudgetYear(years[0])
+      }
       return years.map(year => ({ label: year, value: year }));
     }
   }
