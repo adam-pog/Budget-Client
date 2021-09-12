@@ -87,10 +87,8 @@
   background-color: #007ba0bb;
   justify-content: center;
   align-items: center;
-  margin-top: 3%;
   border-radius: 100px;
-  height: 5%;
-  width: 10%;
+  height: 100%;
 }
 
 .addMonthlyBudget:hover {
@@ -99,6 +97,25 @@
 
 .budgetYearSelect {
   width: 115px;
+}
+
+.autoAddBudget {
+  flex: 6;
+  margin-left: 2%;
+}
+
+.manuallyAddBudget {
+  flex: 4;
+}
+
+.submitContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3%;
+  border-radius: 100px;
+  height: 3%;
+  width: 30%;
 }
 
 @media only screen and (max-width: 3440px) {

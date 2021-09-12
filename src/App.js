@@ -5,6 +5,7 @@ import Signup from './Signup.js'
 import MonthlyBudgets from './MonthlyBudgets.js'
 import BudgetCategories from './BudgetCategories.js'
 import BudgetCategory from './BudgetCategory.js'
+import AddMonthlyBudget from './AddMonthlyBudget.js'
 import AddBudgetCategory from './AddBudgetCategory.js'
 import AddTransaction from './AddTransaction.js'
 import history from './config/history';
@@ -139,6 +140,13 @@ class App extends React.Component {
               <PrivateRoute
                 path='/add_budget_category'
                 component={AddBudgetCategory}
+                menuState={this.state.menuState}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
+                path='/add_monthly_budget'
+                component={AddMonthlyBudget}
                 menuState={this.state.menuState}
                 authenticated={this.props.authenticated}>
               </PrivateRoute>

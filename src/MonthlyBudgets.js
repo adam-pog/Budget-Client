@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './MonthlyBudgets.scss';
-import { gql, useQuery, useLazyQuery } from '@apollo/client';
+import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import history from './config/history';
 import Select from 'react-select'
 
@@ -17,6 +17,20 @@ const getMonthlyBudgets = gql`
 const getAvailableYears = gql`
   query allBudgetYears {
     allBudgetYears
+  }
+`;
+
+const AUTO_ADD_MONTHLY_BUDGET = gql`
+  mutation autoCreateMonthlyBudget {
+    autoCreateMonthlyBudget {
+      monthlyBudget {
+        id
+        month
+        year
+        income
+        net
+      }
+    }
   }
 `;
 
@@ -38,18 +52,24 @@ const currentYear = new Date().getFullYear();
 function MonthlyBudgets({menuState, hideMenu}) {
   const [budgetYear, setBudgetYear] = useState(currentYear);
 
-  const [getBudgets, getMonthlyBudgetsResponse] = useLazyQuery(getMonthlyBudgets)
+  const [getBudgets, getMonthlyBudgetsResponse] = useLazyQuery(getMonthlyBudgets, {
+    fetchPolicy: 'network-only'
+  })
 
   const getAvailableYearsResponse = useQuery(getAvailableYears, {
     fetchPolicy: 'network-only'
   });
 
+  const [autoAddMonthlyBudget] = useMutation(
+    AUTO_ADD_MONTHLY_BUDGET,
+    { errorPolicy: 'all' }
+  );
+
   useEffect(() => {
-    getBudgets({
-      variables: { year: budgetYear },
-      fetchPolicy: 'network-only'
-    });
-  }, [budgetYear]);
+      getBudgets({ variables: { year: budgetYear } });
+    },
+    [budgetYear]
+  );
 
   const monthlyBudgetsData = () => {
     return getMonthlyBudgetsResponse.data
@@ -70,9 +90,17 @@ function MonthlyBudgets({menuState, hideMenu}) {
     }
   }
 
-  const onClick = () => {
+  const manuallyAddBudget = () => {
     hideMenu();
     history.push('/add_monthly_budget');
+  }
+
+  const autoAddBudget = () => {
+    hideMenu();
+    autoAddMonthlyBudget().then(() => {
+      getBudgets({ variables: { year: budgetYear } });
+    })
+
   }
 
   const monthlyBudgetsPresent = () => (
@@ -115,11 +143,19 @@ function MonthlyBudgets({menuState, hideMenu}) {
           ))
         )}
       </div>
-      <div
-        className={`addMonthlyBudget ${monthlyBudgetsPresent() ? menuState : ''}`}
-        onClick={() => onClick()}
-      >
-        <div className='addMonthlyBudgetButton'>Add Budget</div>
+      <div className='submitContainer'>
+        <div
+          className={`addMonthlyBudget manuallyAddBudget ${monthlyBudgetsPresent() ? menuState : ''}`}
+          onClick={() => manuallyAddBudget()}
+        >
+          <div className='addMonthlyBudgetButton'>Manual Add</div>
+        </div>
+        <div
+          className={`addMonthlyBudget autoAddBudget ${menuState}`}
+          onClick={() => autoAddBudget()}
+        >
+          <div className='addMonthlyBudgetButton'>Auto Add Budget</div>
+        </div>
       </div>
     </div>
   )
