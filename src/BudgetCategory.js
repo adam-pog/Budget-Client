@@ -25,7 +25,7 @@ const getBudgetCategory = gql`
 
 function BudgetCategory({menuState, hideMenu, match}) {
   const { error, data } = useQuery(getBudgetCategory, {
-    variables: { id:  match.params.id},
+    variables: { id:  match.params.category_id},
     fetchPolicy: 'network-only'
   });
 
@@ -36,7 +36,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
 
   const onClickAdd = () => {
     hideMenu()
-    history.push(`/budget_category/${match.params.id}/add_transaction`)
+    history.push(`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}/add_transaction`)
   }
 
   return (
@@ -46,7 +46,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
         <div className={'budgetCategory'} data-class='container'>
           {
             <div className='categoryTitleContainer' data-class='container'>
-              <Header prevRoute={'/budget_catgories'} title={data.category.label}/>
+              <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={data.category.label}/>
               <h3 className={`categoryAmount ${amountClass(data.category)}`}>{data.category.spent.toFixed(2)} / {data.category.monthlyAmount}</h3>
             </div>
           }

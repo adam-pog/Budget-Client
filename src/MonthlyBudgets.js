@@ -144,7 +144,7 @@ function MonthlyBudgets({menuState, hideMenu}) {
       </div>
       <div className='submitContainer'>
         <div
-          className={`addMonthlyBudget manuallyAddBudget ${monthlyBudgetsPresent() ? menuState : ''}`}
+          className={`addMonthlyBudget manuallyAddBudget ${menuState}`}
           onClick={() => manuallyAddBudget()}
         >
           <div className='addMonthlyBudgetButton'>Manual Add</div>

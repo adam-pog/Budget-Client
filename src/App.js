@@ -50,7 +50,9 @@ class App extends React.Component {
       if (this.state.menuState === 'hidden' || this.state.menuState === 'closeMenu') {
         this.setState({ menuState: 'openMenu' })
       } else {
-        this.setState({ menuState: 'closeMenu' })
+        this.setState({ menuState: 'closeMenu' }, () => {
+          setTimeout(() => { this.setState({ menuState: 'hidden' }) }, 300)
+        });
       }
     }
   }
@@ -114,6 +116,21 @@ class App extends React.Component {
               </PrivateRoute>
 
               <PrivateRoute
+                path='/budgets/:budget_id/budget_categories/:category_id/add_transaction'
+                component={AddTransaction}
+                menuState={this.state.menuState}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
+                path='/budgets/:budget_id/budget_categories/:category_id'
+                component={BudgetCategory}
+                menuState={this.state.menuState}
+                hideMenu={() => this.hideMenu()}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
                 path='/budgets/:budget_id/budget_categories'
                 component={BudgetCategories}
                 menuState={this.state.menuState}
@@ -124,21 +141,6 @@ class App extends React.Component {
               <PrivateRoute
                 path='/budgets'
                 component={MonthlyBudgets}
-                menuState={this.state.menuState}
-                hideMenu={() => this.hideMenu()}
-                authenticated={this.props.authenticated}>
-              </PrivateRoute>
-
-              <PrivateRoute
-                path='/budgets/:budget_id/budget_categories/:category_id/add_transaction'
-                component={AddTransaction}
-                menuState={this.state.menuState}
-                authenticated={this.props.authenticated}>
-              </PrivateRoute>
-
-              <PrivateRoute
-                path='/budgets/:budget_id/budget_categories/:category_id'
-                component={BudgetCategory}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
                 authenticated={this.props.authenticated}>

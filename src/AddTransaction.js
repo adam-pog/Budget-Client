@@ -6,8 +6,8 @@ import ToggleButton from 'react-toggle-button'
 import './AddTransaction.scss';
 
 const ADD_TRANSACTION = gql`
-  mutation createTransaction($amount: Float!, $source: String!, $date: String!, $description: String!, $categoryId: ID!, $recurring: Boolean!) {
-    createTransaction(amount: $amount, source: $source, date: $date, description: $description, categoryId: $categoryId, recurring: $recurring) {
+  mutation createTransaction($amount: Float!, $source: String!, $day: Int!, $description: String!, $categoryId: ID!, $recurring: Boolean!) {
+    createTransaction(amount: $amount, source: $source, day: $day, description: $description, categoryId: $categoryId, recurring: $recurring) {
       transaction {
         id
       }
@@ -37,17 +37,17 @@ function AddTransaction({ match }) {
         source: source,
         day: day,
         description: description,
-        categoryId: match.params.id,
+        categoryId: match.params.category_id,
         recurring: recurring
       }
     }).then(() => {
-      history.push(`/budget_category/${match.params.id}`)
+      history.push(`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}`)
     })
   }
 
   return (
     <div className={'inputContainer'} data-class='container'>
-      <Header prevRoute={`/budget_category/${match.params.id}`} title={'Create Transaction'} />
+      <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}`} title={'Create Transaction'} />
 
       <span className='inputWrap recurringToggle'>
         <p className={'recurringToggleLabel'}>Recurring: </p>
