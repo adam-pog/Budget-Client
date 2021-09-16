@@ -75,6 +75,12 @@ function BudgetCategory({menuState, hideMenu, match}) {
     history.push(`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}/edit_transaction/${id}`);
   }
 
+  var getOrdinal = function(n) {
+     const suffix=["th","st","nd","rd"];
+     const v=n%100;
+     return n+(suffix[(v-20)%10]||suffix[v]||suffix[0]);
+  }
+
   return (
     <div className='budgetCategoriesPage' data-class='container'>
       { error && <p>Error fetching data</p> }
@@ -93,6 +99,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
                   <span key={i} className='transactionsContainerWrap'>
                     <div className='transactionsContainer'>
                       <p className='transactionDetail transactionSource'>{transaction.source}</p>
+                      <p className='transactionDetail transactionDate'>{getOrdinal(new Date(`${transaction.date}T00:00:00`).getDate())}</p>
                       <p className='transactionDetail transactionAmount'>{transaction.amount}</p>
                       <div className='pencilContainer'>
                         <svg xmlns="http://www.w3.org/2000/svg" onClick={(e) => onClickEdit(e, transaction.id)} className={`pencil ${menuState}`} width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
