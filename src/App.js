@@ -7,6 +7,8 @@ import BudgetCategories from './BudgetCategories.js'
 import BudgetCategory from './BudgetCategory.js'
 import AddMonthlyBudget from './AddMonthlyBudget.js'
 import AddBudgetCategory from './AddBudgetCategory.js'
+import EditBudgetCategory from './EditBudgetCategory.js'
+import EditTransaction from './EditTransaction.js'
 import AddTransaction from './AddTransaction.js'
 import history from './config/history';
 import { Route, Router, Switch, Redirect, Link } from 'react-router-dom'
@@ -111,6 +113,20 @@ class App extends React.Component {
               <PrivateRoute
                 path='/budgets/:budget_id/add_budget_category'
                 component={AddBudgetCategory}
+                menuState={this.state.menuState}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
+                path='/budgets/:budget_id/edit_budget_category/:category_id'
+                component={EditBudgetCategory}
+                menuState={this.state.menuState}
+                authenticated={this.props.authenticated}>
+              </PrivateRoute>
+
+              <PrivateRoute
+                path='/budgets/:budget_id/budget_categories/:category_id/edit_transaction/:transaction_id'
+                component={EditTransaction}
                 menuState={this.state.menuState}
                 authenticated={this.props.authenticated}>
               </PrivateRoute>

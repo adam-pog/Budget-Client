@@ -95,13 +95,44 @@
 }
 
 .transactionDetail {
-  flex: 1;
   text-align: center;
+}
+
+.transactionSource {
+  flex: 5;
+}
+
+.transactionAmount {
+  flex: 2;
 }
 
 .trash {
   height: 24px;
   width: 24px;
+}
+
+.pencil {
+  height: 24px;
+  width: 24px;
+}
+
+.transactionTrashContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  color: #ff3333;
+}
+
+.pencilContainer {
+  // flex: 2;
+  display: flex;
+  align-items: center;
+  color: #007ba0;
+}
+
+.iconSeparator{
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .budgetColor {

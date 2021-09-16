@@ -57,7 +57,7 @@
 }
 
 .categoryLabel {
-  flex: 6;
+  flex: 8;
 }
 
 .categoryAmount {
@@ -69,11 +69,28 @@
   width: 24px;
 }
 
+.pencil {
+  height: 24px;
+  width: 24px;
+}
+
 .trashContainer {
   flex: 1;
   display: flex;
   align-items: center;
   color: #ff3333;
+}
+
+.pencilContainer {
+  // flex: 2;
+  display: flex;
+  align-items: center;
+  color: #007ba0;
+}
+
+.iconSeparator{
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .budgetColor {
