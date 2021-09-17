@@ -138,7 +138,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
 BudgetCategory.propTypes = {
   match: PropTypes.object,
   menuState: PropTypes.string,
-  hideMenu: PropTypes.bool
+  hideMenu: PropTypes.func
 }
 
 export default BudgetCategory;

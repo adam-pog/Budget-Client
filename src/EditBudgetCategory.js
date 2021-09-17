@@ -40,8 +40,6 @@ function EditBudgetCategory({ match }) {
     fetchPolicy: 'network-only'
   });
 
-  console.log(data)
-
   const [label, setLabel] = useState('');
   const [monthlyAmount, setMonthlyAmount] = useState(0);
   const [editCategory] = useMutation(

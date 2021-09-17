@@ -122,7 +122,7 @@ function BudgetCategories({menuState, hideMenu, match}) {
 
 BudgetCategories.propTypes = {
   match: PropTypes.object,
-  hideMenu: PropTypes.bool,
+  hideMenu: PropTypes.func,
   menuState: PropTypes.string
 }
 
