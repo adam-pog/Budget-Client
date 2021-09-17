@@ -11,6 +11,8 @@ const getBudgetCategory = gql`
       label
       monthlyAmount
       spent
+      month
+      year
       transactions {
         id
         amount
@@ -75,11 +77,15 @@ function BudgetCategory({menuState, hideMenu, match}) {
     history.push(`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}/edit_transaction/${id}`);
   }
 
-  var getOrdinal = function(n) {
+  const getOrdinal = function(n) {
      const suffix=["th","st","nd","rd"];
      const v=n%100;
      return n+(suffix[(v-20)%10]||suffix[v]||suffix[0]);
   }
+
+  const headerLabel = () => (
+    `${data.category[0].month} ${data.category[0].year}`
+  )
 
   return (
     <div className='budgetCategoriesPage' data-class='container'>
@@ -89,6 +95,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
           {
             <div className='categoryTitleContainer' data-class='container'>
               <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={data.category.label}/>
+              <h2 className='categorySubheader'>{`${data.category.month} ${data.category.year}`}</h2>
               <h3 className={`categoryAmount ${amountClass(data.category)}`}>{data.category.spent.toFixed(2)} / {data.category.monthlyAmount}</h3>
             </div>
           }

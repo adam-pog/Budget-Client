@@ -11,6 +11,8 @@ const getBudgetCategories = gql`
       label
       monthlyAmount
       spent
+      month
+      year
     }
   }
 `;
@@ -74,11 +76,15 @@ function BudgetCategories({menuState, hideMenu, match}) {
     history.push(`/budgets/${match.params.budget_id}/budget_categories/${id}`);
   }
 
+  const headerLabel = () => {
+    return budgetCategoriesPresent() ? `${data.allCategories[0].month} ${data.allCategories[0].year}` : 'Categories'
+  }
+
   return (
     <div className='budgetCategoriesPage' data-class='container'>
       { error && <p>Error fetching data</p> }
       <div className={'budgetCategories'} data-class='container'>
-        <Header prevRoute={`/budgets`} title={'Categories'}/>
+        <Header prevRoute={`/budgets`} title={headerLabel()}/>
 
         { budgetCategoriesPresent() && data.allCategories.map((category, i) => (
             <span key={i} className='budgetCategoryContainerWrap'>

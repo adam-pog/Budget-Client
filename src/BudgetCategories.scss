@@ -122,6 +122,10 @@
   background-color: #21ab79;
 }
 
+.categoriesSubheader {
+  margin: 0;
+}
+
 @media only screen and (max-width: 3440px) {
   .budgetCategories {
     width: 80%;
@@ -152,7 +156,7 @@
 
 @media only screen and (max-width: 600px) {
   .budgetCategories {
-    height: 70%;
+    height: 80%;
   }
 
   .budgetCategoryContainerWrap {

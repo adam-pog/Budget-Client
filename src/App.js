@@ -69,7 +69,7 @@ class App extends React.Component {
         <Router history={ history }>
           {
             this.props.authenticated &&
-            <ol className={'menu'} data-class='container' onDoubleClick={(e) => this.onDoubleClick(e.target)}>
+            <ol className={`menu ${this.state.menuState}`} data-class='container' onDoubleClick={(e) => this.onDoubleClick(e.target)}>
               <li className={`listItem ${this.state.menuState}`}>
                 <Link className="menuLink" to="/budgets" onClick={() => this.hideMenu()}> Home </Link>
               </li>
@@ -80,7 +80,7 @@ class App extends React.Component {
           }
           {
             !this.props.authenticated &&
-            <ol className={'menu'} data-class='container' onDoubleClick={(e) => this.onDoubleClick(e.target)}>
+            <ol className={`menu ${this.state.menuState}`} data-class='container' onDoubleClick={(e) => this.onDoubleClick(e.target)}>
               <li className={`listItem ${this.state.menuState}`}>
                 {
                   (history.location.pathname === '/login') &&
