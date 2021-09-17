@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.scss';
 import Login from './Login.js'
-import Signup from './Signup.js'
 import MonthlyBudgets from './MonthlyBudgets.js'
 import BudgetCategories from './BudgetCategories.js'
 import BudgetCategory from './BudgetCategory.js'
@@ -15,6 +14,7 @@ import history from './config/history';
 import { Route, Router, Switch, Redirect, Link } from 'react-router-dom'
 import { connect } from "react-redux";
 import { setAuthenticated } from "./actions/index";
+import PropTypes from 'prop-types';
 
 const mapStateToProps = state => {
   return {
@@ -78,21 +78,6 @@ class App extends React.Component {
               </li>
             </ol>
           }
-          {
-            !this.props.authenticated &&
-            <ol className={`menu ${this.state.menuState}`} data-class='container' onDoubleClick={(e) => this.onDoubleClick(e.target)}>
-              <li className={`listItem ${this.state.menuState}`}>
-                {
-                  (history.location.pathname === '/login') &&
-                  <Link className="menuLink" to="/signup" onClick={() => this.hideMenu()}> Signup </Link>
-                }
-                {
-                  (history.location.pathname === '/signup') &&
-                  <Link className="menuLink" to="/login" onClick={() => this.hideMenu()}> Login </Link>
-                }
-              </li>
-            </ol>
-          }
           <div
             className='App'
             onDoubleClick={(e) => this.onDoubleClick(e.target)}
@@ -105,11 +90,6 @@ class App extends React.Component {
                   <Login />
                 }
               </Route>
-              { !this.props.authenticated &&
-                <Route path="/signup">
-                  <Signup />
-                </Route>
-              }
 
               <PrivateRoute
                 path='/budgets/:budget_id/add_budget_category'
@@ -191,6 +171,19 @@ class App extends React.Component {
         </Router>
     )
   }
+}
+
+App.propTypes = {
+  authenticated: PropTypes.bool,
+  setAuthenticated: PropTypes.func
+}
+
+PrivateRoute.propTypes = {
+  authenticated: PropTypes.bool,
+  setAuthenticated: PropTypes.func,
+  menuState: PropTypes.string,
+  hideMenu: PropTypes.func,
+  component: PropTypes.elementType
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

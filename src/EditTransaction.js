@@ -4,6 +4,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import Header from './Header'
 import ToggleButton from 'react-toggle-button'
 import './EditTransaction.scss';
+import PropTypes from 'prop-types';
 
 const EDIT_TRANSACTION = gql`
   mutation editTransaction($amount: Float!, $source: String!, $day: Int!, $description: String!, $id: ID!, $recurring: Boolean!) {
@@ -29,7 +30,7 @@ const getTransaction = gql`
 `;
 
 function EditTransaction({ match }) {
-  const { error, data } = useQuery(getTransaction, {
+  const { data } = useQuery(getTransaction, {
     variables: { id:  match.params.transaction_id},
     fetchPolicy: 'network-only'
   });
@@ -156,6 +157,10 @@ function EditTransaction({ match }) {
       </input>
     </div>
   )
+}
+
+EditTransaction.propTypes = {
+  match: PropTypes.object
 }
 
 export default EditTransaction;

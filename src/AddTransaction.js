@@ -4,6 +4,7 @@ import { gql, useMutation } from '@apollo/client';
 import Header from './Header'
 import ToggleButton from 'react-toggle-button'
 import './AddTransaction.scss';
+import PropTypes from 'prop-types';
 
 const ADD_TRANSACTION = gql`
   mutation createTransaction($amount: Float!, $source: String!, $day: Int!, $description: String!, $categoryId: ID!, $recurring: Boolean!) {
@@ -125,6 +126,10 @@ function AddTransaction({ match }) {
       </input>
     </div>
   )
+}
+
+AddTransaction.propTypes = {
+  match: PropTypes.object
 }
 
 export default AddTransaction;

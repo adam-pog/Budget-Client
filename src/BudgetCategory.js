@@ -3,6 +3,7 @@ import './BudgetCategory.scss';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import history from './config/history';
 import Header from './Header';
+import PropTypes from 'prop-types';
 
 const getBudgetCategory = gql`
   query budgetCategory($id: ID!) {
@@ -83,10 +84,6 @@ function BudgetCategory({menuState, hideMenu, match}) {
      return n+(suffix[(v-20)%10]||suffix[v]||suffix[0]);
   }
 
-  const headerLabel = () => (
-    `${data.category[0].month} ${data.category[0].year}`
-  )
-
   return (
     <div className='budgetCategoriesPage' data-class='container'>
       { error && <p>Error fetching data</p> }
@@ -136,6 +133,12 @@ function BudgetCategory({menuState, hideMenu, match}) {
       </div>
     </div>
   )
+}
+
+BudgetCategory.propTypes = {
+  match: PropTypes.object,
+  menuState: PropTypes.string,
+  hideMenu: PropTypes.bool
 }
 
 export default BudgetCategory;

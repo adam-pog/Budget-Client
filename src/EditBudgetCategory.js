@@ -3,6 +3,7 @@ import './EditBudgetCategory.scss';
 import history from './config/history'
 import { gql, useMutation, useQuery } from '@apollo/client';
 import Header from './Header'
+import PropTypes from 'prop-types';
 
 const EDIT_CATEGORY = gql`
   mutation editCategory($label: String!, $monthlyAmount: Int!, $id: ID!) {
@@ -34,7 +35,7 @@ const getBudgetCategory = gql`
 `;
 
 function EditBudgetCategory({ match }) {
-  const { error, data } = useQuery(getBudgetCategory, {
+  const { data } = useQuery(getBudgetCategory, {
     variables: { id:  match.params.category_id},
     fetchPolicy: 'network-only'
   });
@@ -104,6 +105,10 @@ function EditBudgetCategory({ match }) {
       </input>
     </div>
   )
+}
+
+EditBudgetCategory.propTypes = {
+  match: PropTypes.object
 }
 
 export default EditBudgetCategory;

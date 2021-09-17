@@ -3,6 +3,7 @@ import './AddBudgetCategory.scss';
 import history from './config/history'
 import { gql, useMutation } from '@apollo/client';
 import Header from './Header'
+import PropTypes from 'prop-types';
 
 const ADD_CATEGORY = gql`
   mutation createCategory($label: String!, $monthlyAmount: Int!, $budgetId: ID!) {
@@ -69,6 +70,10 @@ function AddBudgetCategory({ match }) {
       </input>
     </div>
   )
+}
+
+AddBudgetCategory.propTypes = {
+  match: PropTypes.object
 }
 
 export default AddBudgetCategory;

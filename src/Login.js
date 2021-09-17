@@ -4,6 +4,7 @@ import history from './config/history'
 import { gql, useMutation } from '@apollo/client';
 import { setAuthenticated } from "./actions/index";
 import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 
 const GET_TOKEN = gql`
   mutation TokenAuth($username: String!, $password: String!) {
@@ -84,6 +85,10 @@ function Login({ setAuthenticated }) {
       </input>
     </div>
   )
+}
+
+Login.propTypes = {
+  setAuthenticated: PropTypes.func
 }
 
 export default connect(null, mapDispatchToProps)(Login);

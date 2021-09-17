@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import './Signup.scss';
 import history from './config/history'
 import { Fetch } from './FetchHelper.js'
-import { setAuthenticated } from "./actions/index";
-import { connect } from "react-redux";
 
 function Signup({ setAuthenticated }) {
   const [name, setName] = useState('');

@@ -4,6 +4,7 @@ import history from './config/history'
 import { gql, useMutation, useQuery } from '@apollo/client';
 import Header from './Header'
 import Select from 'react-select'
+import PropTypes from 'prop-types';
 
 const EDIT_MONTHLY_BUDGET = gql`
   mutation editMonthlyBudget($year: String!, $month: String!, $income: Int!, $id: ID!) {
@@ -55,7 +56,7 @@ const monthOptions = [
 ]
 
 function EditMonthlyBudget({ match }) {
-  const { error, data } = useQuery(getMonthlyBudget, {
+  const { data } = useQuery(getMonthlyBudget, {
     variables: { id:  match.params.budget_id},
     fetchPolicy: 'network-only'
   });
@@ -145,6 +146,10 @@ function EditMonthlyBudget({ match }) {
       </input>
     </div>
   )
+}
+
+EditMonthlyBudget.propTypes = {
+  match: PropTypes.object
 }
 
 export default EditMonthlyBudget;

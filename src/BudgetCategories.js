@@ -3,6 +3,7 @@ import './BudgetCategories.scss';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import history from './config/history';
 import Header from './Header'
+import PropTypes from 'prop-types';
 
 const getBudgetCategories = gql`
   query allCategories($budgetId: ID!) {
@@ -117,5 +118,13 @@ function BudgetCategories({menuState, hideMenu, match}) {
     </div>
   )
 }
+
+
+BudgetCategories.propTypes = {
+  match: PropTypes.object,
+  hideMenu: PropTypes.bool,
+  menuState: PropTypes.string
+}
+
 
 export default BudgetCategories;

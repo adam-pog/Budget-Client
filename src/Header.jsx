@@ -1,6 +1,7 @@
 import React from 'react';
 import './Header.scss';
 import history from './config/history'
+import PropTypes from 'prop-types';
 
 function Header({ prevRoute, title }) {
   const onBack = () => {
@@ -19,6 +20,11 @@ function Header({ prevRoute, title }) {
       </div>
     </div>
   )
+}
+
+Header.propTypes = {
+  prevRoute: PropTypes.string,
+  title: PropTypes.string
 }
 
 export default Header;

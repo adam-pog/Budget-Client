@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './MonthlyBudgets.scss';
-import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
+import { gql, useQuery, useMutation } from '@apollo/client';
 import history from './config/history';
 import Select from 'react-select'
+import PropTypes from 'prop-types';
 
 const getMonthlyBudgets = gql`
   query monthlyBudgets($year: String!) {
@@ -62,7 +63,9 @@ const currentYear = new Date().getFullYear();
 function MonthlyBudgets({menuState, hideMenu, match}) {
   const [budgetYear, setBudgetYear] = useState(currentYear);
 
-  const [getBudgets, getMonthlyBudgetsResponse] = useLazyQuery(getMonthlyBudgets, {
+  const getMonthlyBudgetsResponse = useQuery(getMonthlyBudgets, {
+    skip: !budgetYear,
+    variables: { year: budgetYear },
     fetchPolicy: 'network-only'
   })
 
@@ -78,12 +81,6 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
   const [autoAddMonthlyBudget] = useMutation(
     AUTO_ADD_MONTHLY_BUDGET,
     { errorPolicy: 'all' }
-  );
-
-  useEffect(() => {
-      getBudgets({ variables: { year: budgetYear } });
-    },
-    [budgetYear]
   );
 
   const monthlyBudgetsData = () => {
@@ -113,9 +110,8 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
   const autoAddBudget = () => {
     hideMenu();
     autoAddMonthlyBudget().then(() => {
-      getBudgets({ variables: { year: budgetYear } });
+      window.location.reload()
     })
-
   }
 
   const monthlyBudgetsPresent = () => (
@@ -207,6 +203,12 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
       </div>
     </div>
   )
+}
+
+MonthlyBudgets.propTypes = {
+  menuState: PropTypes.string,
+  hideMenu: PropTypes.func,
+  match: PropTypes.object,
 }
 
 export default MonthlyBudgets;
