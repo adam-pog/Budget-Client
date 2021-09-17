@@ -46,7 +46,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
   );
 
   const amountClass = (budgetCategory) => (
-    budgetCategory.spent < budgetCategory.monthlyAmount ?
+    budgetCategory.spent <= budgetCategory.monthlyAmount ?
     'budgetColor' : 'overBudgetColor'
   )
 

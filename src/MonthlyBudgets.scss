@@ -57,15 +57,17 @@
 }
 
 .monthlyBudgetMonth {
-  flex: 4;
-}
-
-.monthlyBudgetYear {
-  flex: 4;
+  flex: 6;
 }
 
 .monthlyBudgetNet {
-  flex: 4;
+  flex: 1;
+}
+
+.iconContainer {
+  display: flex;
+  flex: 2;
+  justify-content: center;
 }
 
 .budgetColor {
@@ -116,6 +118,28 @@
   border-radius: 100px;
   height: 3%;
   width: 30%;
+}
+
+.trash {
+  height: 24px;
+  width: 24px;
+}
+
+.pencil {
+  height: 24px;
+  width: 24px;
+}
+
+.budgetTrashContainer {
+  display: flex;
+  align-items: center;
+  color: #ff3333;
+}
+
+.pencilContainer {
+  display: flex;
+  align-items: center;
+  color: #007ba0;
 }
 
 @media only screen and (max-width: 3440px) {

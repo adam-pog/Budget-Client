@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
-import './AddMonthlyBudget.scss';
+import React, { useState, useEffect } from 'react';
+import './EditMonthlyBudget.scss';
 import history from './config/history'
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import Header from './Header'
 import Select from 'react-select'
 
-const ADD_MONTHLY_BUDGET = gql`
-  mutation createMonthlyBudget($year: String!, $month: String!, $income: Int!) {
-    createMonthlyBudget(year: $year, month: $month, income: $income) {
+const EDIT_MONTHLY_BUDGET = gql`
+  mutation editMonthlyBudget($year: String!, $month: String!, $income: Int!, $id: ID!) {
+    editMonthlyBudget(year: $year, month: $month, income: $income, id: $id) {
       monthlyBudget {
         id
       }
+    }
+  }
+`;
+
+const getMonthlyBudget = gql`
+  query monthlyBudget($id: ID!) {
+    monthlyBudget(id: $id) {
+      id
+      year
+      month
+      income
     }
   }
 `;
@@ -43,13 +54,31 @@ const monthOptions = [
   { label: 'December', value: 'December' },
 ]
 
-function AddMonthlyBudget() {
-  const [year, setYear] = useState(undefined);
-  const [month, setMonth] = useState(undefined);
-  const [income, setIncome] = useState(undefined);
-  const [addMonthlyBudget] = useMutation(
-    ADD_MONTHLY_BUDGET,
+function EditMonthlyBudget({ match }) {
+  const { error, data } = useQuery(getMonthlyBudget, {
+    variables: { id:  match.params.budget_id},
+    fetchPolicy: 'network-only'
+  });
+
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
+  const [income, setIncome] = useState('');
+  const [monthOption, setMonthOption] = useState('');
+
+  const [editMonthlyBudget] = useMutation(
+    EDIT_MONTHLY_BUDGET,
     { errorPolicy: 'all' }
+  );
+
+  useEffect(() => {
+      if (data) {
+        setYear(data.monthlyBudget.year);
+        setMonth(data.monthlyBudget.month);
+        setIncome(data.monthlyBudget.income);
+        setMonthOption(monthOptions.find((option) => option.value === data.monthlyBudget.month));
+      }
+    },
+    [data]
   );
 
   const onKeyDown = (key) => {
@@ -57,20 +86,26 @@ function AddMonthlyBudget() {
   }
 
   const onSubmit = () => {
-    addMonthlyBudget({
-      variables: { year: year, month: month, income: income }
+    editMonthlyBudget({
+      variables: { year: year, month: month, income: income, id: match.params.budget_id }
     }).then(() => {
       history.push('/budgets')
     })
   }
 
+  const onChangeSelect = (option) => {
+    setMonth(option.value)
+    setMonthOption(option)
+  }
+
   return (
-    <div className={'inputContainer'} data-class='container'>
-      <Header prevRoute={'/budgets'} title={'Create Budget'}/>
+    <div className={'editBudgetInputContainer'} data-class='container'>
+      <Header prevRoute={'/budgets'} title={'Edit Budget'}/>
       <span className='inputWrap'>
         <input
           type='number'
           className='input'
+          value={income}
           onChange={(e) => setIncome(parseInt(e.target.value))}
           placeholder='Income'
         >
@@ -80,6 +115,7 @@ function AddMonthlyBudget() {
       <span className='inputWrap'>
         <input
           type='text'
+          value={year}
           className='input'
           onChange={(e) => setYear(e.target.value)}
           placeholder='Year'
@@ -92,15 +128,16 @@ function AddMonthlyBudget() {
         <Select
           options={monthOptions}
           styles={selectStyles}
+          value={monthOption}
           className='monthSelect'
           isSearchable={false}
           placeholder={"Month"}
-          onChange={option => (setMonth(option.value))}
+          onChange={option => onChangeSelect(option)}
         />
       </span>
 
       <input
-        className='addMonthlyBudgetSubmit'
+        className='editMonthlyBudgetSubmit'
         type='button'
         value='Submit'
         onClick={() => onSubmit()}
@@ -110,4 +147,4 @@ function AddMonthlyBudget() {
   )
 }
 
-export default AddMonthlyBudget;
+export default EditMonthlyBudget;

@@ -115,8 +115,9 @@ function EditTransaction({ match }) {
         <input
           type='number'
           className='input'
+          step='.01'
           value={amount}
-          onChange={(e) => setAmount(parseInt(e.target.value))}
+          onChange={(e) => setAmount(parseFloat(e.target.value))}
           placeholder='Amount'
         >
         </input>

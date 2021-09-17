@@ -86,7 +86,8 @@ function AddTransaction({ match }) {
         <input
           type='number'
           className='input'
-          onChange={(e) => setAmount(parseInt(e.target.value))}
+          step=".01"
+          onChange={(e) => setAmount(parseFloat(e.target.value))}
           placeholder='Amount'
         >
         </input>
