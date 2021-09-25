@@ -52,7 +52,7 @@ function Login({ setAuthenticated }) {
   }
 
   return (
-    <div className={'inputContainer'} data-class='container'>
+    <div className={'loginInputContainer'} data-class='container'>
       <span className='inputWrap'>
         <input
           type='text'

@@ -1,4 +1,4 @@
-.inputContainer {
+.addTransactionInputContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,6 +69,12 @@ input[type=number]::-webkit-outer-spin-button {
   margin-right: 10%;
 }
 
+@media only screen and (max-width: 3440px) {
+  .addTransactionInputContainer {
+    width: 50%;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .inputWrap {
     margin: 3%;
@@ -82,7 +88,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 5%;
   }
 
-  .inputContainer {
+  .addTransactionInputContainer {
     width: 80%;
     height: 70%;
   }
@@ -104,7 +110,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 0%;
   }
 
-  .inputContainer {
+  .addTransactionInputContainer {
     height: 100%;
   }
 }

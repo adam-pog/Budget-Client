@@ -36,7 +36,7 @@ function AddBudgetCategory({ match }) {
   }
 
   return (
-    <div className={'inputContainer'} data-class='container'>
+    <div className={'addCategoryInputContainer'} data-class='container'>
       <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={'Create Category'}/>
       <span className='inputWrap'>
         <input

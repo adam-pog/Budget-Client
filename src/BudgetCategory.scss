@@ -175,7 +175,7 @@
 
 @media only screen and (max-width: 3440px) {
   .budgetCategory {
-    width: 80%;
+    width: 50%;
   }
 
   .transactionsContainerWrap {
@@ -184,6 +184,12 @@
 
   .addTransaction {
     width: 20%;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .budgetCategory{
+    width: 80%;
   }
 }
 

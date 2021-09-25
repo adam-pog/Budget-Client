@@ -47,7 +47,7 @@ function AddTransaction({ match }) {
   }
 
   return (
-    <div className={'inputContainer'} data-class='container'>
+    <div className={'addTransactionInputContainer'} data-class='container'>
       <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}`} title={'Create Transaction'} />
 
       <span className='inputWrap recurringToggle'>

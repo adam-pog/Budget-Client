@@ -146,7 +146,7 @@
 
 @media only screen and (max-width: 3440px) {
   .monthlyBudgets {
-    width: 80%;
+    width: 50%;
   }
 
   .monthlyBudgetContainerWrap {
@@ -155,6 +155,12 @@
 
   .addMonthlyBudget {
     width: 20%;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .monthlyBudgets {
+    width: 80%;
   }
 }
 
