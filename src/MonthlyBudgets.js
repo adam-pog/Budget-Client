@@ -167,7 +167,7 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
             <span key={i} className='monthlyBudgetContainerWrap'>
             <div className='monthlyBudgetContainer' onClick={() => onClickCategory(monthlyBudget.id)}>
               <p className='monthlyBudgetMonth'>{monthlyBudget.month}</p>
-              <p className={`monthlyBudgetNet ${amountClass(monthlyBudget.net)}`}>{monthlyBudget.net}</p>
+              <p className={`monthlyBudgetNet ${amountClass(monthlyBudget.net)}`}>{monthlyBudget.net.toFixed(2)}</p>
               <div className='iconContainer'>
                 <div className='pencilContainer'>
                   <svg xmlns="http://www.w3.org/2000/svg" onClick={(e) => onClickEdit(e, monthlyBudget.id)} className={`pencil ${menuState}`} width="16" height="16" fill="currentColor" viewBox="0 0 16 16">

@@ -106,8 +106,9 @@ function EditMonthlyBudget({ match }) {
         <input
           type='number'
           className='input'
+          step=".01"
           value={income}
-          onChange={(e) => setIncome(parseInt(e.target.value))}
+          onChange={(e) => setIncome(parseFloat(e.target.value))}
           placeholder='Income'
         >
         </input>
