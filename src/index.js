@@ -11,7 +11,7 @@ import { setAuthenticated } from './actions/index';
 import store from "./config/configureStore";
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_URL,
 });
 
 const authLink = setContext((_, { headers }) => {
