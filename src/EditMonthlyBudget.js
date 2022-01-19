@@ -7,7 +7,7 @@ import Select from 'react-select'
 import PropTypes from 'prop-types';
 
 const EDIT_MONTHLY_BUDGET = gql`
-  mutation editMonthlyBudget($year: String!, $month: String!, $income: Int!, $id: ID!) {
+  mutation editMonthlyBudget($year: String!, $month: String!, $income: Float!, $id: ID!) {
     editMonthlyBudget(year: $year, month: $month, income: $income, id: $id) {
       monthlyBudget {
         id
