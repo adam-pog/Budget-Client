@@ -1,49 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './MonthlyBudgets.scss';
-import { gql, useQuery, useMutation } from '@apollo/client';
 import history from './config/history';
 import Select from 'react-select'
 import PropTypes from 'prop-types';
-
-const getMonthlyBudgets = gql`
-  query monthlyBudgets($year: String!) {
-    monthlyBudgets(year: $year) {
-      id,
-      month,
-      net
-    }
-  }
-`;
-
-const getAvailableYears = gql`
-  query allBudgetYears {
-    allBudgetYears
-  }
-`;
-
-const AUTO_ADD_MONTHLY_BUDGET = gql`
-  mutation autoCreateMonthlyBudget {
-    autoCreateMonthlyBudget {
-      monthlyBudget {
-        id
-        month
-        year
-        income
-        net
-      }
-    }
-  }
-`;
-
-const DELETE_MONTHLY_BUDGET = gql`
-  mutation deleteMonthlyBudget($id: ID!) {
-    deleteMonthlyBudget(id: $id) {
-      monthlyBudget {
-        id
-      }
-    }
-  }
-`;
 
 const selectStyles = {
   control: (base, state) => ({
@@ -62,43 +21,30 @@ const currentYear = new Date().getFullYear();
 
 function MonthlyBudgets({menuState, hideMenu, match}) {
   const [budgetYear, setBudgetYear] = useState(currentYear);
+  const [availableYears, setAvailableYears] = useState(null);
+  const [monthlyBudgets, setmonthlyBudgets] = useState(null);
 
-  const getMonthlyBudgetsResponse = useQuery(getMonthlyBudgets, {
-    skip: !budgetYear,
-    variables: { year: budgetYear },
-    fetchPolicy: 'network-only'
-  })
+  useEffect(() => {
+    fetch('http://localhost:8000/budgets/years').then((response) => 
+      response.json()
+    ).then((data) => {
+      setAvailableYears(data.years)
+    });
 
-  const [deleteMonthlyBudget] = useMutation(
-    DELETE_MONTHLY_BUDGET,
-    { errorPolicy: 'all' }
-  );
-
-  const getAvailableYearsResponse = useQuery(getAvailableYears, {
-    fetchPolicy: 'network-only'
-  });
-
-  const [autoAddMonthlyBudget] = useMutation(
-    AUTO_ADD_MONTHLY_BUDGET,
-    { errorPolicy: 'all' }
-  );
-
-  const monthlyBudgetsData = () => {
-    return getMonthlyBudgetsResponse.data
-  }
-
-  const monthlyBudgetsError = () => {
-    return getMonthlyBudgetsResponse.error
-  }
+    fetch(`http://localhost:8000/budgets/year/${budgetYear}/`).then((response) => 
+      response.json()
+    ).then((data) => {
+      setmonthlyBudgets(data.budgets)
+      
+    });
+  }, [budgetYear])
 
   const yearOptions = () => {
-    const years = getAvailableYearsResponse.data && getAvailableYearsResponse.data.allBudgetYears;
-
-    if(years) {
-      if ((budgetYear === currentYear) && budgetYear !== years[0]) {
-        setBudgetYear(years[0])
+    if(availableYears) {
+      if ((budgetYear === currentYear) && budgetYear !== availableYears[0]) {
+        setBudgetYear(availableYears[0])
       }
-      return years.map(year => ({ label: year, value: year }));
+      return availableYears.map(year => ({ label: year, value: year }));
     }
   }
 
@@ -109,14 +55,14 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
 
   const autoAddBudget = () => {
     hideMenu();
-    autoAddMonthlyBudget().then(() => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    fetch(`http://localhost:8000/budgets/year/${budgetYear}`, options).then((response) => 
       window.location.reload()
-    })
+    )
   }
-
-  const monthlyBudgetsPresent = () => (
-    monthlyBudgetsData() && monthlyBudgetsData().monthlyBudgets.length > 0
-  )
 
   const onClickCategory = (id) => {
     history.push(`/budgets/${id}/budget_categories/`);
@@ -130,13 +76,13 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
     e.stopPropagation();
     hideMenu();
 
-    deleteMonthlyBudget({
-      variables: { id: id },
-      update(cache) {
-        cache.evict({ id: `MonthlyBudgetType:${id}` });
-        cache.gc();
-      }
-    })
+    const options = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    fetch(`http://localhost:8000/budgets/${id}`, options).then((response) => 
+      window.location.reload()
+    )
   }
 
   const onClickEdit = (e, id) => {
@@ -148,7 +94,6 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
 
   return (
     <div className='monthlyBudgetsPage' data-class='container'>
-      { monthlyBudgetsError() && <p>Error fetching data</p> }
       <div className={'monthlyBudgets'} data-class='container'>
         <h1>Budgets</h1>
         { yearOptions() && (
@@ -162,8 +107,8 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
             />
           )
         }
-        { monthlyBudgetsPresent() && (
-          monthlyBudgetsData() && monthlyBudgetsData().monthlyBudgets.map((monthlyBudget, i) => (
+        { monthlyBudgets && (
+          monthlyBudgets.map((monthlyBudget, i) => (
             <span key={i} className='monthlyBudgetContainerWrap'>
             <div className='monthlyBudgetContainer' onClick={() => onClickCategory(monthlyBudget.id)}>
               <p className='monthlyBudgetMonth'>{monthlyBudget.month}</p>

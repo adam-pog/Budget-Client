@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.scss';
-import Login from './Login.js'
 import MonthlyBudgets from './MonthlyBudgets.js'
 import BudgetCategories from './BudgetCategories.js'
 import BudgetCategory from './BudgetCategory.js'
@@ -32,9 +31,7 @@ const mapDispatchToProps = dispatch => {
 
 const PrivateRoute = ({ component: Component, authenticated, menuState, hideMenu, ...rest }) => (
   <Route {...rest} render={(props) => (
-    authenticated
-      ? <Component {...props } menuState={menuState} hideMenu={hideMenu}/>
-      : <Redirect to='/' />
+    <Component {...props } menuState={menuState} hideMenu={hideMenu}/>
   )} />
 )
 
@@ -85,45 +82,39 @@ class App extends React.Component {
           >
 
             <Switch>
-              <Route exact path='/login'>
-                { !this.props.authenticated &&
-                  <Login />
-                }
-              </Route>
-
               <PrivateRoute
                 path='/budgets/:budget_id/add_budget_category'
                 component={AddBudgetCategory}
                 menuState={this.state.menuState}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <PrivateRoute
                 path='/budgets/:budget_id/edit_budget'
                 component={EditMonthlyBudget}
                 menuState={this.state.menuState}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <PrivateRoute
                 path='/budgets/:budget_id/edit_budget_category/:category_id'
                 component={EditBudgetCategory}
                 menuState={this.state.menuState}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <PrivateRoute
                 path='/budgets/:budget_id/budget_categories/:category_id/edit_transaction/:transaction_id'
                 component={EditTransaction}
                 menuState={this.state.menuState}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <PrivateRoute
                 path='/budgets/:budget_id/budget_categories/:category_id/add_transaction'
                 component={AddTransaction}
                 menuState={this.state.menuState}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <PrivateRoute
@@ -131,7 +122,7 @@ class App extends React.Component {
                 component={BudgetCategory}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <PrivateRoute
@@ -139,7 +130,7 @@ class App extends React.Component {
                 component={BudgetCategories}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <PrivateRoute
@@ -147,24 +138,20 @@ class App extends React.Component {
                 component={MonthlyBudgets}
                 menuState={this.state.menuState}
                 hideMenu={() => this.hideMenu()}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <PrivateRoute
                 path='/add_monthly_budget'
                 component={AddMonthlyBudget}
                 menuState={this.state.menuState}
-                authenticated={this.props.authenticated}>
+              >
               </PrivateRoute>
 
               <Route>
-                { !this.props.authenticated &&
-                  <Redirect to='/login' />
-                }
-                { this.props.authenticated &&
+                {
                   <Redirect to='/budgets' />
                 }
-
               </Route>
             </Switch>
           </div>

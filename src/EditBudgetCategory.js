@@ -1,69 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import './EditBudgetCategory.scss';
 import history from './config/history'
-import { gql, useMutation, useQuery } from '@apollo/client';
 import Header from './Header'
 import PropTypes from 'prop-types';
 
-const EDIT_CATEGORY = gql`
-  mutation editCategory($label: String!, $monthlyAmount: Int!, $id: ID!) {
-    editCategory(label: $label, monthlyAmount: $monthlyAmount, id: $id) {
-      category {
-        id
-      }
-    }
-  }
-`;
-
-const getBudgetCategory = gql`
-  query budgetCategory($id: ID!) {
-    category(id: $id) {
-      id
-      label
-      monthlyAmount
-      spent
-      transactions {
-        id
-        amount
-        source
-        date
-        recurring
-        description
-      }
-    }
-  }
-`;
-
 function EditBudgetCategory({ match }) {
-  const { data } = useQuery(getBudgetCategory, {
-    variables: { id:  match.params.category_id},
-    fetchPolicy: 'network-only'
-  });
-
   const [label, setLabel] = useState('');
   const [monthlyAmount, setMonthlyAmount] = useState(0);
-  const [editCategory] = useMutation(
-    EDIT_CATEGORY,
-    { errorPolicy: 'all' }
-  );
 
   useEffect(() => {
-      data && setLabel(data.category.label)
-      data && setMonthlyAmount(data.category.monthlyAmount)
-    },
-    [data]
-  );
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories/${match.params.category_id}`).then((response) => 
+      response.json()
+    ).then((data) => {
+      console.log(data)
+      setLabel(data.category.name)
+      setMonthlyAmount(data.category.amount)
+    });
+  }, [match.params.budget_id, match.params.category_id]);
 
   const onKeyDown = (key) => {
     if (key === 'Enter') onSubmit()
   }
 
   const onSubmit = () => {
-    editCategory({
-      variables: { label: label, monthlyAmount: monthlyAmount, id: match.params.category_id }
-    }).then(() => {
+    const options = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: label, amount: monthlyAmount })
+    }
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories/${match.params.category_id}`, options).then((response) => 
       history.push(`/budgets/${match.params.budget_id}/budget_categories`)
-    })
+    )
   }
 
   return (

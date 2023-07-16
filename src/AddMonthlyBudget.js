@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import './AddMonthlyBudget.scss';
 import history from './config/history'
-import { gql, useMutation } from '@apollo/client';
 import Header from './Header'
 import Select from 'react-select'
 
-const ADD_MONTHLY_BUDGET = gql`
-  mutation createMonthlyBudget($year: String!, $month: String!, $income: Int!) {
-    createMonthlyBudget(year: $year, month: $month, income: $income) {
-      monthlyBudget {
-        id
-      }
-    }
-  }
-`;
+// const ADD_MONTHLY_BUDGET = gql`
+//   mutation createMonthlyBudget($year: String!, $month: String!, $income: Int!) {
+//     createMonthlyBudget(year: $year, month: $month, income: $income) {
+//       monthlyBudget {
+//         id
+//       }
+//     }
+//   }
+// `;
 
 const selectStyles = {
   control: (base, state) => ({
@@ -47,21 +46,20 @@ function AddMonthlyBudget() {
   const [year, setYear] = useState(undefined);
   const [month, setMonth] = useState(undefined);
   const [income, setIncome] = useState(undefined);
-  const [addMonthlyBudget] = useMutation(
-    ADD_MONTHLY_BUDGET,
-    { errorPolicy: 'all' }
-  );
 
   const onKeyDown = (key) => {
     if (key === 'Enter') onSubmit()
   }
 
   const onSubmit = () => {
-    addMonthlyBudget({
-      variables: { year: year, month: month, income: income }
-    }).then(() => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ year: year, month: month, amount: income})
+    }
+    fetch(`http://localhost:8000/budgets/`, options).then((response) => 
       history.push('/budgets')
-    })
+    )
   }
 
   return (

@@ -1,31 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './EditMonthlyBudget.scss';
 import history from './config/history'
-import { gql, useMutation, useQuery } from '@apollo/client';
 import Header from './Header'
 import Select from 'react-select'
 import PropTypes from 'prop-types';
-
-const EDIT_MONTHLY_BUDGET = gql`
-  mutation editMonthlyBudget($year: String!, $month: String!, $income: Float!, $id: ID!) {
-    editMonthlyBudget(year: $year, month: $month, income: $income, id: $id) {
-      monthlyBudget {
-        id
-      }
-    }
-  }
-`;
-
-const getMonthlyBudget = gql`
-  query monthlyBudget($id: ID!) {
-    monthlyBudget(id: $id) {
-      id
-      year
-      month
-      income
-    }
-  }
-`;
 
 const selectStyles = {
   control: (base, state) => ({
@@ -56,42 +34,37 @@ const monthOptions = [
 ]
 
 function EditMonthlyBudget({ match }) {
-  const { data } = useQuery(getMonthlyBudget, {
-    variables: { id:  match.params.budget_id},
-    fetchPolicy: 'network-only'
-  });
 
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
   const [income, setIncome] = useState('');
   const [monthOption, setMonthOption] = useState('');
 
-  const [editMonthlyBudget] = useMutation(
-    EDIT_MONTHLY_BUDGET,
-    { errorPolicy: 'all' }
-  );
-
   useEffect(() => {
-      if (data) {
-        setYear(data.monthlyBudget.year);
-        setMonth(data.monthlyBudget.month);
-        setIncome(data.monthlyBudget.income);
-        setMonthOption(monthOptions.find((option) => option.value === data.monthlyBudget.month));
-      }
-    },
-    [data]
-  );
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}`).then((response) => 
+      response.json()
+    ).then((data) => {
+      console.log(data)
+      setYear(data.year);
+      setMonth(data.month);
+      setIncome(data.amount);
+      setMonthOption(monthOptions.find((option) => option.value === data.month));
+    });
+  }, [match.params.budget_id]);
 
   const onKeyDown = (key) => {
     if (key === 'Enter') onSubmit()
   }
 
   const onSubmit = () => {
-    editMonthlyBudget({
-      variables: { year: year, month: month, income: income, id: match.params.budget_id }
-    }).then(() => {
+    const options = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ year: year, month: month, amount: income})
+    }
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}`, options).then((response) => 
       history.push('/budgets')
-    })
+    )
   }
 
   const onChangeSelect = (option) => {

@@ -1,52 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './BudgetCategory.scss';
-import { gql, useQuery, useMutation } from '@apollo/client';
 import history from './config/history';
 import Header from './Header';
 import PropTypes from 'prop-types';
 
-const getBudgetCategory = gql`
-  query budgetCategory($id: ID!) {
-    category(id: $id) {
-      id
-      label
-      monthlyAmount
-      spent
-      month
-      year
-      transactions {
-        id
-        amount
-        source
-        date
-        recurring
-        description
-      }
-    }
-  }
-`;
-
-
-const DELETE_TRANSACTION = gql`
-  mutation deleteTransaction($id: ID!) {
-    deleteTransaction(id: $id) {
-      transaction {
-        id
-      }
-    }
-  }
-`;
-
 function BudgetCategory({menuState, hideMenu, match}) {
-  const { error, data } = useQuery(getBudgetCategory, {
-    variables: { id:  match.params.category_id},
-    fetchPolicy: 'network-only'
-  });
+  const [category, setCategory] = useState(null);
+  const [transactions, setTransactions] = useState([]);
 
-  const [deleteTransaction] = useMutation(
-    DELETE_TRANSACTION,
-    { errorPolicy: 'all' }
-  );
+  useEffect(() => {
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories/${match.params.category_id}`).then((response) => 
+      response.json()
+    ).then((data) => {
+      console.log(data.category)
+      setCategory(data.category)
+    });
+    
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories/${match.params.category_id}/transactions`).then((response) => 
+      response.json()
+    ).then((data) => {
+      setTransactions(data.transactions)
+    });
+  }, [match.params.budget_id])
 
   const amountClass = (budgetCategory) => (
     budgetCategory.spent <= budgetCategory.monthlyAmount ?
@@ -62,13 +37,13 @@ function BudgetCategory({menuState, hideMenu, match}) {
     e.stopPropagation();
     hideMenu();
 
-    deleteTransaction({
-      variables: { id: id },
-      update(cache) {
-        cache.evict({ id: `TransactionType:${id}` });
-        cache.gc();
-      }
-    })
+    // deleteTransaction({
+    //   variables: { id: id },
+    //   update(cache) {
+    //     cache.evict({ id: `TransactionType:${id}` });
+    //     cache.gc();
+    //   }
+    // })
   }
 
   const onClickEdit = (e, id) => {
@@ -86,20 +61,19 @@ function BudgetCategory({menuState, hideMenu, match}) {
 
   return (
     <div className='budgetCategoriesPage' data-class='container'>
-      { error && <p>Error fetching data</p> }
-      { data && data.category && (
+      { category && (
         <div className={'budgetCategory'} data-class='container'>
           {
             <div className='categoryTitleContainer' data-class='container'>
-              <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={data.category.label}/>
-              <h2 className='categorySubheader'>{`${data.category.month} ${data.category.year}`}</h2>
-              <h3 className={`categoryAmount ${amountClass(data.category)}`}>{data.category.spent.toFixed(2)} / {data.category.monthlyAmount}</h3>
+              <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={category.label}/>
+              <h2 className='categorySubheader'>{`${category.month} ${category.year}`}</h2>
+              <h3 className={`categoryAmount ${amountClass(category)}`}>{category.spent.toFixed(2)} / {category.amount}</h3>
             </div>
           }
-          {
+          { transactions.length > 0 && (
             <div className='transactions' data-class='container'>
               {
-                data.category.transactions.map((transaction, i) => (
+                transactions.map((transaction, i) => (
                   <span key={i} className='transactionsContainerWrap'>
                     <div className='transactionsContainer'>
                       <p className='transactionDetail transactionSource'>{transaction.source}</p>
@@ -122,7 +96,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
                 ))
               }
             </div>
-          }
+          )}
         </div>
       )}
       <div
