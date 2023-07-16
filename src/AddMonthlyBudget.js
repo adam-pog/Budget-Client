@@ -4,16 +4,6 @@ import history from './config/history'
 import Header from './Header'
 import Select from 'react-select'
 
-// const ADD_MONTHLY_BUDGET = gql`
-//   mutation createMonthlyBudget($year: String!, $month: String!, $income: Int!) {
-//     createMonthlyBudget(year: $year, month: $month, income: $income) {
-//       monthlyBudget {
-//         id
-//       }
-//     }
-//   }
-// `;
-
 const selectStyles = {
   control: (base, state) => ({
      ...base,

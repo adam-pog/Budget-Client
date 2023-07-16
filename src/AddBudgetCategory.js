@@ -1,43 +1,31 @@
 import React, { useState } from 'react';
 import './AddBudgetCategory.scss';
 import history from './config/history'
-import { gql, useMutation } from '@apollo/client';
 import Header from './Header'
 import PropTypes from 'prop-types';
-
-const ADD_CATEGORY = gql`
-  mutation createCategory($label: String!, $monthlyAmount: Int!, $budgetId: ID!) {
-    createCategory(label: $label, monthlyAmount: $monthlyAmount, budgetId: $budgetId) {
-      category {
-        id
-      }
-    }
-  }
-`;
 
 function AddBudgetCategory({ match }) {
   const [label, setLabel] = useState('');
   const [monthlyAmount, setMonthlyAmount] = useState(0);
-  const [addCategory] = useMutation(
-    ADD_CATEGORY,
-    { errorPolicy: 'all' }
-  );
 
   const onKeyDown = (key) => {
     if (key === 'Enter') onSubmit()
   }
 
   const onSubmit = () => {
-    addCategory({
-      variables: { label: label, monthlyAmount: monthlyAmount, budgetId: match.params.budget_id }
-    }).then(() => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: label, amount: monthlyAmount})
+    }
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories`, options).then((response) => 
       history.push(`/budgets/${match.params.budget_id}/budget_categories`)
-    })
+    )
   }
 
   return (
     <div className={'addCategoryInputContainer'} data-class='container'>
-      <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={'Create Category'}/>
+      <Header prevRoute={`/budgets/${match.params.budget_id}/categories`} title={'Create Category'}/>
       <span className='inputWrap'>
         <input
           type='text'
