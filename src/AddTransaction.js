@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
 import history from './config/history'
-import { gql, useMutation } from '@apollo/client';
 import Header from './Header'
 import ToggleButton from 'react-toggle-button'
 import './AddTransaction.scss';
 import PropTypes from 'prop-types';
-
-const ADD_TRANSACTION = gql`
-  mutation createTransaction($amount: Float!, $source: String!, $day: Int!, $description: String!, $categoryId: ID!, $recurring: Boolean!) {
-    createTransaction(amount: $amount, source: $source, day: $day, description: $description, categoryId: $categoryId, recurring: $recurring) {
-      transaction {
-        id
-      }
-    }
-  }
-`;
 
 function AddTransaction({ match }) {
   const [amount, setAmount] = useState(0);
@@ -22,28 +11,28 @@ function AddTransaction({ match }) {
   const [day, setDay] = useState(new Date().getDate());
   const [description, setDescription] = useState(0);
   const [recurring, setRecurring] = useState(false);
-  const [addTransaction] = useMutation(
-    ADD_TRANSACTION,
-    { errorPolicy: 'all' }
-  );
+
 
   const onKeyDown = (key) => {
     if (key === 'Enter') onSubmit()
   }
 
   const onSubmit = () => {
-    addTransaction({
-      variables: {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         amount: amount,
         source: source,
         day: day,
         description: description,
         categoryId: match.params.category_id,
         recurring: recurring
-      }
-    }).then(() => {
+      })
+    }
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories/${match.params.category_id}/transactions`, options).then((response) => 
       history.push(`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}`)
-    })
+    )
   }
 
   return (

@@ -1,77 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import history from './config/history'
-import { gql, useMutation, useQuery } from '@apollo/client';
 import Header from './Header'
 import ToggleButton from 'react-toggle-button'
 import './EditTransaction.scss';
 import PropTypes from 'prop-types';
 
-const EDIT_TRANSACTION = gql`
-  mutation editTransaction($amount: Float!, $source: String!, $day: Int!, $description: String!, $id: ID!, $recurring: Boolean!) {
-    editTransaction(amount: $amount, source: $source, day: $day, description: $description, id: $id, recurring: $recurring) {
-      transaction {
-        id
-      }
-    }
-  }
-`;
-
-const getTransaction = gql`
-  query transaction($id: ID!) {
-    transaction(id: $id) {
-      id
-      amount
-      source
-      date
-      recurring
-      description
-    }
-  }
-`;
-
 function EditTransaction({ match }) {
-  const { data } = useQuery(getTransaction, {
-    variables: { id:  match.params.transaction_id},
-    fetchPolicy: 'network-only'
-  });
-
   const [amount, setAmount] = useState(0);
   const [source, setSource] = useState('');
-  const [day, setDay] = useState(new Date().getDate());
-  const [description, setDescription] = useState(0);
+  const [day, setDay] = useState(0);
+  const [description, setDescription] = useState('');
   const [recurring, setRecurring] = useState(false);
-  const [editTransaction] = useMutation(
-    EDIT_TRANSACTION,
-    { errorPolicy: 'all' }
-  );
 
   useEffect(() => {
-      data && setAmount(data.transaction.amount)
-      data && setSource(data.transaction.source)
-      data && setDay(new Date(`${data.transaction.date}T00:00:00`).getDate())
-      data && setDescription(data.transaction.description)
-      data && setRecurring(data.transaction.recurring)
-    },
-    [data]
-  );
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories/${match.params.category_id}/transactions/${match.params.transaction_id}`).then((response) => 
+      response.json()
+    ).then((data) => {
+      setAmount(data.transaction.amount)
+      setSource(data.transaction.source)
+      setDay(data.transaction.date)
+      setDescription(data.transaction.description)
+      setRecurring(data.transaction.recurring)
+    });
+  }, [match.params.budget_id, match.params.category_id, match.params.transaction_id]);
+
 
   const onKeyDown = (key) => {
     if (key === 'Enter') onSubmit()
   }
 
   const onSubmit = () => {
-    editTransaction({
-      variables: {
-        id: match.params.transaction_id,
-        amount: amount,
-        source: source,
-        day: day,
-        description: description,
-        recurring: recurring
-      }
-    }).then(() => {
+    const options = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+          amount: amount,
+          source: source,
+          day: day,
+          description: description,
+          recurring: recurring
+      })
+    }
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories/${match.params.category_id}/transactions/${match.params.transaction_id}`, options).then((response) => 
       history.push(`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}`)
-    })
+    )
   }
 
   return (

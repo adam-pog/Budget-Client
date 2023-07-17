@@ -24,7 +24,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
   }, [match.params.budget_id])
 
   const amountClass = (budgetCategory) => (
-    budgetCategory.spent <= budgetCategory.monthlyAmount ?
+    budgetCategory.spent <= budgetCategory.amount ?
     'budgetColor' : 'overBudgetColor'
   )
 
@@ -37,13 +37,13 @@ function BudgetCategory({menuState, hideMenu, match}) {
     e.stopPropagation();
     hideMenu();
 
-    // deleteTransaction({
-    //   variables: { id: id },
-    //   update(cache) {
-    //     cache.evict({ id: `TransactionType:${id}` });
-    //     cache.gc();
-    //   }
-    // })
+    const options = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories/${match.params.category_id}/transactions/${id}`, options).then((response) => 
+      window.location.reload()
+    )
   }
 
   const onClickEdit = (e, id) => {
@@ -53,11 +53,11 @@ function BudgetCategory({menuState, hideMenu, match}) {
     history.push(`/budgets/${match.params.budget_id}/budget_categories/${match.params.category_id}/edit_transaction/${id}`);
   }
 
-  const getOrdinal = function(n) {
-     const suffix=["th","st","nd","rd"];
-     const v=n%100;
-     return n+(suffix[(v-20)%10]||suffix[v]||suffix[0]);
-  }
+  // const getOrdinal = function(n) {
+  //    const suffix=["th","st","nd","rd"];
+  //    const v=n%100;
+  //    return n+(suffix[(v-20)%10]||suffix[v]||suffix[0]);
+  // }
 
   return (
     <div className='budgetCategoriesPage' data-class='container'>
@@ -77,7 +77,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
                   <span key={i} className='transactionsContainerWrap'>
                     <div className='transactionsContainer'>
                       <p className='transactionDetail transactionSource'>{transaction.source}</p>
-                      <p className='transactionDetail transactionDate'>{getOrdinal(new Date(`${transaction.date}T00:00:00`).getDate())}</p>
+                      <p className='transactionDetail transactionDate'>{transaction.date}</p>
                       <p className='transactionDetail transactionAmount'>{transaction.amount}</p>
                       <div className='pencilContainer'>
                         <svg xmlns="http://www.w3.org/2000/svg" onClick={(e) => onClickEdit(e, transaction.id)} className={`pencil ${menuState}`} width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
