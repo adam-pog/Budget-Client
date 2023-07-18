@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 function BudgetCategories({menuState, hideMenu, match}) {
   const [categories, setCategories] = useState([]);
+  const [fileData, setFileData] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:8000/budgets/${match.params.budget_id}/categories`).then((response) => 
@@ -54,6 +55,24 @@ function BudgetCategories({menuState, hideMenu, match}) {
     return categories.length > 0 ? `${categories[0].month} ${categories[0].year}` : 'Categories'
   }
 
+  const uploadStatement = () => {
+    let formData = new FormData();
+    formData.append("file", fileData);
+
+    const options = {
+      method: 'POST',
+      body: formData
+    }
+    fetch(`http://localhost:8000/budgets/${match.params.budget_id}}/upload_statement`, options).then((response) => 
+      window.location.reload()
+    )
+  }
+
+  const onFileChange = (e) => {
+    setFileData(e.target.files[0])
+    console.log(fileData)
+  }
+
   return (
     <div className='budgetCategoriesPage' data-class='container'>
       <div className={'budgetCategories'} data-class='container'>
@@ -86,6 +105,12 @@ function BudgetCategories({menuState, hideMenu, match}) {
         onClick={() => onClick()}
       >
         <div className='addBudgetCategoryButton'>Add Category</div>
+      </div>
+      <div className={`uploadStatementContainer ${menuState}`}>
+        <input className={`uploadStatement`} type="file" onChange={onFileChange}/>
+        <button className={`uploadStatement`} onClick={uploadStatement}>
+            Upload!
+        </button>
       </div>
     </div>
   )

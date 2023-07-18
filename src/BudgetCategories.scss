@@ -107,6 +107,12 @@
   background-color: transparent;
 }
 
+// .uploadStatement {
+//   text-align: center;
+//   border: none;
+//   background-color: transparent;
+// }
+
 .addBudgetCategory {
   display: flex;
   background-color: #007ba0bb;
@@ -116,6 +122,19 @@
   border-radius: 100px;
   height: 5%;
   width: 10%;
+}
+
+.uploadStatementContainer {
+  display: flex;
+  background-color: #007ba0bb;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3%;
+  border-radius: 100px;
+  height: 5%;
+  width: 30%;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 .addBudgetCategory:hover {
