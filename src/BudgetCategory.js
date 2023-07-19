@@ -21,7 +21,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
     ).then((data) => {
       setTransactions(data.transactions)
     });
-  }, [match.params.budget_id])
+  }, [match.params.budget_id, match.params.category_id])
 
   const amountClass = (budgetCategory) => (
     budgetCategory.spent <= budgetCategory.amount ?

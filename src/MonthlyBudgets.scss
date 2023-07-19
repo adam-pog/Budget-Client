@@ -144,6 +144,57 @@
   color: #007ba0;
 }
 
+.bulk-input-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 2%;
+}
+
+.bulk-input {
+  color: white;
+  background: transparent;
+
+  clip-path: polygon(
+    0 0,
+    92% 0,
+    100% 50%,
+    100% 100%,
+    8% 100%,
+    0 50%
+  );
+
+  text-align: center;
+  border: none;
+  outline-width: 0;
+  background-color: #2a614d99;
+  height: 100%;
+  width: 15%;
+  margin-left: 1%;
+}
+
+.bulk-input-long {
+  color: white;
+  background: transparent;
+
+  clip-path: polygon(
+    0 0,
+    92% 0,
+    100% 50%,
+    100% 100%,
+    8% 100%,
+    0 50%
+  );
+
+  text-align: center;
+  border: none;
+  outline-width: 0;
+  background-color: #2a614d99;
+  height: 100%;
+  width: 40%;
+  margin-left: 1%;
+}
+
 @media only screen and (max-width: 3440px) {
   .monthlyBudgets {
     width: 50%;
