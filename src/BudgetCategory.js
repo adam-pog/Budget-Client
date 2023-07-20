@@ -65,7 +65,7 @@ function BudgetCategory({menuState, hideMenu, match}) {
         <div className={'budgetCategory'} data-class='container'>
           {
             <div className='categoryTitleContainer' data-class='container'>
-              <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={category.label}/>
+              <Header prevRoute={`/budgets/${match.params.budget_id}/budget_categories`} title={category.name}/>
               <h2 className='categorySubheader'>{`${category.month} ${category.year}`}</h2>
               <h3 className={`categoryAmount ${amountClass(category)}`}>{category.spent.toFixed(2)} / {category.amount}</h3>
             </div>

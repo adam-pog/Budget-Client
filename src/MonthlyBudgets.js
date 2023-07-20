@@ -18,7 +18,6 @@ const selectStyles = {
 }
 
 const currentYear = new Date().getFullYear();
-
 function MonthlyBudgets({menuState, hideMenu, match}) {
   const [budgetYear, setBudgetYear] = useState(currentYear);
   const [availableYears, setAvailableYears] = useState(null);
@@ -32,7 +31,7 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
     ).then((data) => {
       setAvailableYears(data.years)
     });
-
+    console.log(budgetYear)
     fetch(`http://localhost:8000/budgets/year/${budgetYear}/`).then((response) => 
       response.json()
     ).then((data) => {
@@ -42,9 +41,6 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
 
   const yearOptions = () => {
     if(availableYears) {
-      if ((budgetYear === currentYear) && budgetYear !== availableYears[0]) {
-        setBudgetYear(availableYears[0])
-      }
       return availableYears.map(year => ({ label: year, value: year }));
     }
   }
@@ -101,7 +97,7 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
       method: 'POST',
       body: formData
     }
-    fetch(`http://localhost:8000/budgets/${budgetYear}/upload_statement`, options).then((response) => 
+    fetch(`http://localhost:8000/budgets/year/${budgetYear}/upload_statement`, options).then((response) => 
       // window.location.reload()
       response.json()
     ).then((response) => {
@@ -116,7 +112,7 @@ function MonthlyBudgets({menuState, hideMenu, match}) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({transactions: uploadData})
     }
-    fetch(`http://localhost:8000/budgets/${budgetYear}/bulk_upload`, options).then((response) => 
+    fetch(`http://localhost:8000/budgets/year/${budgetYear}/bulk_upload`, options).then((response) => 
       window.location.reload()
     )
   }
